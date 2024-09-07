@@ -1,21 +1,11 @@
 <script lang="ts">
-    import Authentification from "$lib/authentification.svelte";
+    import AuthService from "$lib/authentification.svelte";
+    import { t } from "$lib/translations/index";
 
-    let auth = Authentification.auth;
-    let authentificationModal: HTMLDialogElement;
+    import Authentification from "./authentification.svelte";
 
-    let userForm = $state({
-        email: "test@test.com",
-        password: "test1234",
-        isLoading: false,
-    });
-
-    async function login() {
-        userForm.isLoading = true;
-        await Authentification.login(userForm.email, userForm.password);
-        authentificationModal.close();
-        userForm.isLoading = false;
-    }
+    let auth = AuthService.auth;
+    let authentificationModal: Authentification;
 </script>
 
 <div class="navbar bg-base-300">
@@ -26,61 +16,36 @@
         {#if !auth.isConnected}
             <button
                 class="btn btn-ghost"
-                onclick={() => authentificationModal.showModal()}
-                >
+                onclick={() => authentificationModal.show()}
+            >
                 <i class="fa-solid fa-user"></i>
-                Sign in</button
-            >
+                {$t("common.auth.login")}
+            </button>
         {:else}
-            <button class="btn btn-ghost" onclick={Authentification.logout}
-                >Logout</button
-            >
+            <div class="dropdown dropdown-end">
+                <div class="avatar m-2" tabindex="0" role="button">
+                    <div
+                        class="ring-primary ring-offset-base-100 w-8 rounded-full ring ring-offset-2"
+                    >
+                        <img src="https://avatar.iran.liara.run/public" />
+                    </div>
+                </div>
+                <ul
+                    class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+                >
+                    <li>
+                        <button
+                            class="btn btn-ghost"
+                            onclick={AuthService.logout}
+                        >
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            {$t("common.auth.logout")}
+                        </button>
+                    </li>
+                </ul>
+            </div>
         {/if}
     </div>
 </div>
 
-<dialog
-    id="authentificationModal"
-    bind:this={authentificationModal}
-    class="modal"
->
-    <div class="modal-box">
-        <h3 class="text-lg font-bold">Sign in</h3>
-        <div>
-            <div class="flex flex-col gap-4 mt-4">
-                <label class="input input-bordered flex items-center gap-2">
-                    <i class="fa-solid fa-envelope"></i>
-                    <input
-                        type="email"
-                        class="grow"
-                        placeholder="E-mail"
-                        value={userForm.email}
-                    />
-                </label>
-                <label class="input input-bordered flex items-center gap-2">
-                    <i class="fa-solid fa-key"></i>
-                    <input
-                        type="password"
-                        class="grow"
-                        value={userForm.password}
-                    />
-                </label>
-
-                <div class="flex gap-2 ml-auto">
-                    <button
-                        class="btn"
-                        onclick={() => authentificationModal.close()}
-                        >Cancel</button
-                    >
-                    <button class="btn btn-primary" onclick={login}>
-                        <span class:hidden={!userForm.isLoading} class="loading loading-spinner loading-md"></span>
-                        Login
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <form method="dialog" class="modal-backdrop">
-        <button>close</button>
-    </form>
-</dialog>
+<Authentification bind:this={authentificationModal} />

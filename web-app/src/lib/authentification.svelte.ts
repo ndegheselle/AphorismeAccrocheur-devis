@@ -18,19 +18,22 @@ async function getUserSession() {
     try {
         auth.user = await account.get();
         auth.isConnected = true;
-    } catch (e: any) {
-        if (e.code != 401 || e.type != 'general_unauthorized_scope')
-            throw e;
-
+    } catch (error) {
         auth.user = null;
         auth.isConnected = false;
     }
 }
 
 async function login(email: string, password: string) {
-    await account.createEmailPasswordSession(email, password);
-    auth.user = await account.get();
+    try {
+        await account.createEmailPasswordSession(email, password);
+        auth.user = await account.get();
+    }
+    catch (error) {
+        return false;
+    }
     auth.isConnected = true;
+    return true;
 }
 
 async function logout() {
