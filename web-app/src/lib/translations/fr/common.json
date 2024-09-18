@@ -1,6 +1,4 @@
 {
     "cancel": "Annuler",
-    "auth.login": "Me connecter",
-    "auth.logout": "Se déconnecter",
-    "auth.login.error": "E-mail ou mots de passe inconnu."
+    "parameters": "Paramètres"
 }

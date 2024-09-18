@@ -5,8 +5,9 @@
     import Footer from "./footer.svelte";
 </script>
 
-<Navigation />
+<div class="flex flex-col h-screen justify-between">
+    <Navigation />
+    <slot class="mb-auto"/>
+    <Footer />
+</div>
 
-<slot />
-
-<Footer />

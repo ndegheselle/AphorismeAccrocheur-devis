@@ -1,8 +1,7 @@
 <script lang="ts">
+    import { goto } from "$app/navigation";
     import Authentification from "$lib/authentification.svelte";
     import { t } from "$lib/translations/index";
-
-    let authentificationModal: HTMLDialogElement;
 
     let authForm = $state({
         email: "test@test.com",
@@ -10,32 +9,24 @@
         isLoading: false,
         isError: false,
     });
-    
+
     async function login() {
         authForm.isLoading = true;
         authForm.isError = !(await Authentification.login(
             authForm.email,
             authForm.password,
         ));
-        if (!authForm.isError) {
-            authentificationModal.close();
-        }
         authForm.isLoading = false;
-    }
-
-    export function show()
-    {
-        authentificationModal.show();
+        if (!authForm.isError) {
+            // TODO : goto previous page before login
+            goto("/");
+        }
     }
 </script>
 
-<dialog
-    id="authentificationModal"
-    bind:this={authentificationModal}
-    class="modal"
->
-    <div class="modal-box">
-        <h3 class="text-lg font-bold">{$t("common.auth.login")}</h3>
+<div class="card bg-base-200 w-96 shadow-xl mx-auto">
+    <div class="card-body">
+        <h2 class="card-title">{$t("user.login")}</h2>
         <div>
             <div class="flex flex-col gap-4 mt-4">
                 <label
@@ -64,27 +55,24 @@
 
                 <small class="text-error" class:hidden={!authForm.isError}>
                     <i class="fa-solid fa-warning"></i>
-                    {$t("common.auth.login.error")}
+                    {$t("user.login.error")}
                 </small>
 
-                <div class="flex gap-2 ml-auto">
-                    <button
-                        class="btn"
-                        onclick={() => authentificationModal.close()}
-                        >{$t("common.cancel")}</button
-                    >
-                    <button class="btn btn-primary" onclick={login}>
-                        <span
-                            class:hidden={!authForm.isLoading}
-                            class="loading loading-spinner loading-md"
-                        ></span>
-                        {$t("common.auth.login")}
-                    </button>
-                </div>
+                <button class="btn btn-primary" onclick={login}>
+                    <span
+                        class:hidden={!authForm.isLoading}
+                        class="loading loading-spinner loading-md"
+                    ></span>
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    {$t("user.login")}
+                </button>
+
+                <div class="divider">{$t("user.register.alt")}</div>
+
+                <a class="btn btn-neutral" href="/user/register">
+                    {$t("user.register")}
+                </a>
             </div>
         </div>
     </div>
-    <form method="dialog" class="modal-backdrop">
-        <button>close</button>
-    </form>
-</dialog>
+</div>

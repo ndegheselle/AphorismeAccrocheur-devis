@@ -1,0 +1,13 @@
+{
+    "avatar.alt": "Avatar de l'utilisateur",
+    "register.alt": "Envie de nous rejoindre ?",
+    "register": "S'inscrire",
+    "register.error": "E-mail ou mots de passe inconnu.",
+    "login": "Se connecter",
+    "logout": "Se déconnecter",
+    "login.error": "E-mail ou mots de passe inconnu.",
+    "name": "Nom",
+    "password": "Mot de passe",
+    "password.confirm": "Confirmer mot de passe",
+    "phone": "Numéro de téléphone"
+}

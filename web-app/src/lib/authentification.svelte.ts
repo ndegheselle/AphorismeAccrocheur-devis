@@ -1,4 +1,5 @@
 import { account } from '$lib/appwrite';
+import { ID } from "appwrite";
 import type { Models } from 'appwrite';
 
 type User = Models.User<Models.Preferences>;
@@ -42,10 +43,17 @@ async function logout() {
     auth.isConnected = false;
 }
 
+async function register(email: string, password: string, name: string)
+{
+    await account.create(ID.unique(), email, password, name);
+    return await login(email, password);
+}
+
 export default {
     get auth() {
         return auth;
     },
     login,
-    logout
+    logout,
+    register
 };
