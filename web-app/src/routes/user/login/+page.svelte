@@ -69,7 +69,7 @@
 
                 <div class="divider">{$t("user.register.alt")}</div>
 
-                <a class="btn btn-neutral" href="/user/register">
+                <a class="btn" href="/user/register">
                     {$t("user.register")}
                 </a>
             </div>
