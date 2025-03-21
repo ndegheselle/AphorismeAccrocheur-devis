@@ -17,6 +17,13 @@ const config = ({
     },
     {
       locale: 'fr',
+      key: 'navigation',
+      loader: async () => (
+        await import('./fr/navigation.json')
+      ).default,
+    },
+    {
+      locale: 'fr',
       key: 'user',
       loader: async () => (
         await import('./fr/user.json')

@@ -24,7 +24,7 @@
     }
 </script>
 
-<div class="card bg-base-200 w-96 shadow-xl mx-auto">
+<div class="card bg-base-200 w-96 shadow-xl m-auto p-4">
     <div class="card-body">
         <h2 class="card-title">{$t("user.login")}</h2>
         <div>

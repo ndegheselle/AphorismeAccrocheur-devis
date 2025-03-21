@@ -1,4 +1,6 @@
 {
     "cancel": "Annuler",
-    "parameters": "Paramètres"
+    "new": "Nouveau",
+    "parameters": "Paramètres",
+    "error.generic": "Une erreur c'est produite."
 }
