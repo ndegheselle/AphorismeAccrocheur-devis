@@ -33,10 +33,10 @@
                         <li><a href="/products"><i class="fa-solid fa-box"></i> {$t("navigation.products")}</a></li>
                         <li><a href="/services"><i class="fa-solid fa-note-sticky"></i> {$t("navigation.services")}</a></li>
                         <li><a href="/prestations"><i class="fa-solid fa-layer-group"></i> {$t("navigation.prestations")}</a></li>
-                        <li><a href="/clients"><i class="fa-solid fa-address-book"></i> {$t("navigation.clients")}</a></li>
                     </ul>
                 </details>
             </li>
+            <li><a href="/clients"><i class="fa-solid fa-address-book"></i> {$t("navigation.clients")}</a></li>
             <li><a href="/estimates"><i class="fa-solid fa-file"></i> {$t("navigation.estimates")}</a></li>
             <li><a href="/invoices"><i class="fa-solid fa-file-invoice"></i> {$t("navigation.invoices")}</a></li>
             </ul>
@@ -52,10 +52,10 @@
                         <li><a href="/products"><i class="fa-solid fa-box"></i> {$t("navigation.products")}</a></li>
                         <li><a href="/services"><i class="fa-solid fa-note-sticky"></i> {$t("navigation.services")}</a></li>
                         <li><a href="/prestations"><i class="fa-solid fa-layer-group"></i> {$t("navigation.prestations")}</a></li>
-                        <li><a href="/clients"><i class="fa-solid fa-address-book"></i> {$t("navigation.clients")}</a></li>
                     </ul>
                 </details>
             </li>
+            <li><a href="/clients"><i class="fa-solid fa-address-book"></i> {$t("navigation.clients")}</a></li>
             <li><a href="/estimates"><i class="fa-solid fa-file"></i> {$t("navigation.estimates")}</a></li>
             <li><a href="/invoices"><i class="fa-solid fa-file-invoice"></i> {$t("navigation.invoices")}</a></li>
         </ul>
