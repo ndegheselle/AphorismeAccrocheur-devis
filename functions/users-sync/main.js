@@ -18,7 +18,7 @@ export default async function ({req, res, log, error}) {
     // Create a new document in the users collection
     const response = await databases.createDocument(
       process.env.DATABASE_ID,
-      process.env.USERS_COLLECTION_ID,
+      `[${process.env.USERS_COLLECTION_ID}]`,
       user.$id,
       {}
     );
