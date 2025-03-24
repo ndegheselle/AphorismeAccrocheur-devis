@@ -1,10 +1,8 @@
-import { Client, Databases, ID } from 'node-appwrite';
+import { Client, Databases } from 'node-appwrite';
 
-// This is the main function that will handle the event
-export default async function(req, res) {
-  // Initialize the Appwrite SDK
+export default async function (req, res) {
   const client = new Client();
-  
+
   // Set the endpoint and API key from the environment variables
   client
     .setEndpoint(process.env.APPWRITE_ENDPOINT)
@@ -13,18 +11,17 @@ export default async function(req, res) {
 
   // Initialize the Databases service
   const databases = new Databases(client);
-  
   // Get the user data from the event payload
   const user = JSON.parse(req.payload);
-  
+
   try {
     // Create a new document in the users collection
     const response = await databases.createDocument(
-      process.env.DATABASE_ID, // Replace with your database ID or set as environment variable
-      process.env.USERS_COLLECTION_ID, // Replace with your users collection ID or set as environment variable
-      user.$, // Generate a unique document ID
+      process.env.DATABASE_ID,
+      process.env.USERS_COLLECTION_ID,
+      user.$id,
     );
-    
+
     // Return a success response
     return res.json({
       success: true,
@@ -33,7 +30,7 @@ export default async function(req, res) {
     });
   } catch (error) {
     console.error('Error adding user to collection:', error);
-    
+
     // Return an error response
     return res.json({
       success: false,
