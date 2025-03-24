@@ -20,6 +20,7 @@ export default async function ({req, res, log, error}) {
       process.env.DATABASE_ID,
       process.env.USERS_COLLECTION_ID,
       user.$id,
+      {}
     );
 
     // Return a success response
