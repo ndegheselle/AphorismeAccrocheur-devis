@@ -1,6 +1,6 @@
 import { Client, Databases } from 'node-appwrite';
 
-export default async function (req, res) {
+export default async function ({req, res, log, error}) {
   const client = new Client();
 
   // Set the endpoint and API key from the environment variables
@@ -29,7 +29,7 @@ export default async function (req, res) {
       user: response
     });
   } catch (error) {
-    console.error('Error adding user to collection:', error);
+    error('Error adding user to collection:', error);
 
     // Return an error response
     return res.json({
