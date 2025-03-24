@@ -28,14 +28,14 @@ export default async function ({req, res, log, error}) {
       message: 'User successfully added to collection',
       user: response
     });
-  } catch (error) {
-    error('Error adding user to collection:', error);
+  } catch (exception) {
+    error('Error adding user to collection:', exception);
 
     // Return an error response
     return res.json({
       success: false,
       message: 'Failed to add user to collection',
-      error: error.message
+      error: exception.message
     }, 500);
   }
 };
