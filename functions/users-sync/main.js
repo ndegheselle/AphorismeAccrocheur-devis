@@ -12,7 +12,7 @@ export default async function (req, res) {
   // Initialize the Databases service
   const databases = new Databases(client);
   // Get the user data from the event payload
-  const user = JSON.parse(req.payload);
+  const user = JSON.parse(req.bodyJson);
 
   try {
     // Create a new document in the users collection
