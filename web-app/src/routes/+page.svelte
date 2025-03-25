@@ -1,7 +1,5 @@
 <script>
-    import Authentification from "$lib/authentification.svelte";
     import { t } from "$lib/translations/index";
-    let auth = Authentification.auth;
 </script>
 
 <div class="container mx-auto py-4">

@@ -1,7 +1,6 @@
 <script lang="ts">
-    import AuthService from "$lib/authentification.svelte";
+    import auth from "$lib/stores/auth.svelte";
     import { t } from "$lib/translations/index";
-    let auth = AuthService.auth;
 </script>
 
 <div class="navbar bg-base-300">
@@ -91,7 +90,7 @@
                             </a>
                         </li>
                         <li>
-                            <button onclick={AuthService.logout}>
+                            <button onclick={auth.logout}>
                                 <i class="fa-solid fa-right-from-bracket"></i>
                                 {$t("user.logout")}
                             </button>

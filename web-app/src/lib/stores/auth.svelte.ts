@@ -3,44 +3,34 @@ import { ID } from "appwrite";
 import type { Models } from 'appwrite';
 
 type User = Models.User<Models.Preferences>;
-interface AuthState {
-    isConnected: boolean;
-    user: User | null;
-}
+let currentUser = $state<User | null>(null);
+let isConnected = $derived<boolean>(currentUser != null);
 
-let auth = $state<AuthState>({
-    isConnected: false,
-    user: null
-});
+await getCurrentUser();
 
-await getUserSession();
-
-async function getUserSession() {
+async function getCurrentUser() {
     try {
-        auth.user = await account.get();
-        auth.isConnected = true;
+        currentUser = await account.get();
     } catch (error) {
-        auth.user = null;
-        auth.isConnected = false;
+        currentUser = null;
     }
 }
 
 async function login(email: string, password: string) {
     try {
         await account.createEmailPasswordSession(email, password);
-        auth.user = await account.get();
+        currentUser = await account.get();
     }
     catch (error) {
+        currentUser = null;
         return false;
     }
-    auth.isConnected = true;
     return true;
 }
 
 async function logout() {
     await account.deleteSession('current');
-    auth.user = null;
-    auth.isConnected = false;
+    currentUser = null;
 }
 
 async function register(email: string, password: string, name: string)
@@ -50,9 +40,8 @@ async function register(email: string, password: string, name: string)
 }
 
 export default {
-    get auth() {
-        return auth;
-    },
+    currentUser,
+    isConnected,
     login,
     logout,
     register

@@ -28,6 +28,13 @@ const config = ({
       loader: async () => (
         await import('./fr/user.json')
       ).default,
+    },
+    {
+      locale: 'fr',
+      key: 'clients',
+      loader: async () => (
+        await import('./fr/clients.json')
+      ).default,
     }
   ]
 });

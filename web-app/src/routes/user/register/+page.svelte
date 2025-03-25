@@ -1,6 +1,6 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import Authentification from "$lib/authentification.svelte";
+    import auth from "$lib/stores/auth.svelte";
     import { t } from "$lib/translations/index";
 
     let authForm = $state({
@@ -16,7 +16,7 @@
         authForm.isLoading = true;
 
         try {
-            await Authentification.register(
+            await auth.register(
                 authForm.email,
                 authForm.password,
                 authForm.name,

@@ -1,7 +1,6 @@
 <script lang="ts">
-    import AuthService from "$lib/authentification.svelte";
+    import auth from "$lib/stores/auth.svelte";
     import { t } from "$lib/translations/index";
-    let auth = AuthService.auth;
 </script>
 
 <div class="container flex-1 mx-auto">
@@ -12,16 +11,16 @@
                     alt={$t("user.avatar.alt")}
                     src="https://avatar.iran.liara.run/public"
                 />
-                <span>{auth.user?.name}</span>
+                <span>{auth.currentUser?.name}</span>
             </h2>
             <div class="flex flex-col gap-4 mt-4">
                 <div>
                     <h3 class="font-bold text-slate-600">E-mail</h3>
-                    <span>{auth.user?.email}</span>
+                    <span>{auth.currentUser?.email}</span>
                 </div>
                 <div>
                     <h3 class="font-bold text-slate-600">{$t("user.phone")}</h3>
-                    <span>{auth.user?.phone}</span>
+                    <span>{auth.currentUser?.phone}</span>
                 </div>
             </div>
         </div>

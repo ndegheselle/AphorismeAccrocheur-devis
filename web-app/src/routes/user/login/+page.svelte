@@ -1,6 +1,6 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import Authentification from "$lib/authentification.svelte";
+    import auth from "$lib/stores/auth.svelte";
     import { t } from "$lib/translations/index";
 
     let authForm = $state({
@@ -12,7 +12,7 @@
 
     async function login() {
         authForm.isLoading = true;
-        authForm.isError = !(await Authentification.login(
+        authForm.isError = !(await auth.login(
             authForm.email,
             authForm.password,
         ));
