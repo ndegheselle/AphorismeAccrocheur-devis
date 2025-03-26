@@ -1,5 +1,6 @@
 <script lang="ts">
     import auth from "$lib/stores/auth.svelte";
+    import alerts from "$lib/stores/alerts.svelte";
     import { t } from "$lib/translations/index";
 </script>
 

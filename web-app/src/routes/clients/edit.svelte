@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { Client } from "$lib/models/clients"
-    import clients from "$lib/models/clients"
+    import { Client } from "$lib/models/clients";
+    import clients from "$lib/models/clients";
 
     let client: Client = new Client();
     let { modal = $bindable() } = $props();
@@ -16,8 +16,9 @@
     <div class="modal-box">
         <form method="dialog">
             <button
+            aria-label="close"
                 class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-                >✕</button
+                ><i class="fa-solid fa-xmark"></i></button
             >
         </form>
         <h3 class="text-lg font-bold">Nouveau client</h3>
@@ -37,8 +38,7 @@
 
             <div class="grid grid-cols-3 gap-2">
                 <div class="col-span-2">
-                    <label class="fieldset-label" for="lastname">Ville</label>
-                    <input type="text" name="lastname" class="input" value={client.city}/>
+                    <label class="fieldset-label" for="lastname">Ville</label> 
                 </div>
                 <div class="col-span-1">
                     <label class="fieldset-label" for="zipCode"

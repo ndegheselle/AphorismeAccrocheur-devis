@@ -1,14 +1,26 @@
 import { databases, databaseId, collections } from '$lib/appwrite';
 import auth from '$lib/stores/auth.svelte';
 import { ID, Permission, Role } from "appwrite";
+import { IsEmail, IsOptional, IsPhoneNumber, validate, ValidationError } from "class-validator";
+
 export class Client {
     firstName: string = "";
+
     lastName: string = "";
     address: string = "";
     city: string = "";
     zipCode: string = "";
-    email: string | null = null;
-    phone: string | null = null;
+
+    @IsOptional()
+    @IsEmail()
+    email?: string = undefined;
+    @IsOptional()
+    @IsPhoneNumber()
+    phone?: string = undefined;
+
+    async checkErrors() : Promise<ValidationError[]> {
+        return await validate(this);
+    }
 }
 
 async function create(client: Client) {
