@@ -45,6 +45,7 @@
     </div>
     <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal px-1">
+            <!--
             <li>
                 <details>
                     <summary><i class="fa-solid fa-user-tie"></i> {$t("navigation.my_company")}</summary>
@@ -55,9 +56,10 @@
                     </ul>
                 </details>
             </li>
-            <li><a href="/clients"><i class="fa-solid fa-address-book"></i> {$t("navigation.clients")}</a></li>
             <li><a href="/estimates"><i class="fa-solid fa-file"></i> {$t("navigation.estimates")}</a></li>
             <li><a href="/invoices"><i class="fa-solid fa-file-invoice"></i> {$t("navigation.invoices")}</a></li>
+            -->
+            <li><a href="/clients"><i class="fa-solid fa-address-book"></i> {$t("navigation.clients")}</a></li>
         </ul>
     </div>
     <div class="navbar-end">

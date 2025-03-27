@@ -1,40 +1,25 @@
 <script lang="ts">
-    import { repository, Client } from "$lib/models/clients";
+    import { repository, Estimate } from "$lib/models/estimates";
+    import { Client } from "$lib/models/clients";
     import alerts from "$lib/stores/alerts.svelte"
     import { t } from "$lib/translations/index";
+    import { clearErrors, displayErrors } from "$lib/base/errors";
 
     let fieldset: HTMLFieldSetElement;
-    let client: Client = new Client();
-    /**
-     * Clean all displayed inputs errors
-     */
-    function clearErrors() {
-        fieldset.querySelectorAll(".input-error").forEach((input) => {
-            input.classList.remove("input-error");
-        });
-    }
+    let estimate: Estimate = new Estimate();
 
     async function save() {
-        clearErrors();
-        let errors = await client.checkErrors();
+        clearErrors(fieldset);
+        let errors = await estimate.checkErrors();
         if (errors.length > 0) {
-            // Display input field with errors
-            errors.forEach((error) => {
-                const input = fieldset.querySelector(
-                    `[name="${error.property}"]`,
-                ) as HTMLInputElement;
-
-                if (input) {
-                    input.classList.add("input-error");
-                }
-            });
+            displayErrors(fieldset, errors);
             return;
         }
 
         try
         {
             // Create client
-            await repository.create(client);
+            await repository.create(estimate);
             modal.close();
         }
         catch
@@ -43,8 +28,8 @@
         }
     }
     let modal: HTMLDialogElement;
+    let {client} = $props();
 </script>
-
 <dialog class="modal" bind:this={modal}>
     <fieldset class="fieldset w-md modal-box bg-base-200 border border-base-300 p-4 rounded-box" bind:this={fieldset}>
         <legend class="fieldset-legend">{$t("clients.new")}</legend>
@@ -76,7 +61,6 @@
             name="adress"
             bind:value={client.adress}
         />
-
         <div class="grid grid-cols-3 gap-2">
             <div class="col-span-2">
                 <label class="fieldset-label" for="city">{$t("clients.city")} *</label>

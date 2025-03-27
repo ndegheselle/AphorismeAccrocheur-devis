@@ -1,15 +1,19 @@
 import { databases, databaseId, collections } from '$lib/appwrite';
 import auth from '$lib/stores/auth.svelte';
-import { ID, Permission, Role } from "appwrite";
-import { IsEmail, IsOptional, IsPhoneNumber, validate, ValidationError } from "class-validator";
+import { ID, Permission, Role, Query } from "appwrite";
+import { IsEmail, IsOptional, IsNotEmpty, IsPhoneNumber, validate, ValidationError } from "class-validator";
 
 export class Client {
-    firstName: string = "";
-
-    lastName: string = "";
-    address: string = "";
-    city: string = "";
-    zipCode: string = "";
+    $id?: string;
+    firstName: string;
+    @IsNotEmpty()
+    lastName: string;
+    @IsNotEmpty()
+    adress: string;
+    @IsNotEmpty()
+    city: string;
+    @IsNotEmpty()
+    zipCode: string;
 
     @IsOptional()
     @IsEmail()
@@ -35,6 +39,24 @@ async function create(client: Client) {
         ]);
 }
 
-export default {
-    create
+async function getAll(limit: number, offset: number): Promise<Client[]>
+{
+    let result = await databases.listDocuments(databaseId, collections.clients, [
+        Query.limit(limit),
+        Query.offset(offset)
+    ]);
+    let clients: Client[] = result.documents.map(doc => Object.assign(new Client(), doc));
+    return clients;
+}
+
+async function getById(id: string): Promise<Client>
+{
+    let result = await databases.getDocument(databaseId, collections.clients, id);
+    return Object.assign(new Client(), result);
+}
+
+export const repository = {
+    create,
+    getAll,
+    getById
 };

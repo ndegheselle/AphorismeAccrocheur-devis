@@ -1,1 +1,11 @@
-{}
+{
+    "edit.error": "Une erreur est survenue lors de la création du client.",
+    "new": "Nouveau client",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "adress": "Adresse",
+    "city": "Ville",
+    "zipCode": "Code postal",
+    "email": "E-mail",
+    "phone": "Téléphone"
+}

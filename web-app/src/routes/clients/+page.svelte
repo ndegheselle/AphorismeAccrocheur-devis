@@ -1,8 +1,15 @@
 <script lang="ts">
+    import {onMount} from "svelte";
     import { t } from "$lib/translations/index";
     import Edit from "./edit.svelte";
+    import { repository, Client } from "$lib/models/clients";
+    import Pagination from "$lib/components/navigation/pagination.svelte";
 
-    let edit : HTMLDialogElement;
+    let edit : Edit;
+    let clients = $state<Client[]>([]);
+    onMount(async() => {
+        clients = await repository.getAll(25, 0);
+    });
 </script>
 
 <div class="container mx-auto py-4">
@@ -11,11 +18,36 @@
             <h1 class="text-center text-2xl font-bold">
                 Ajouter un nouveau client
             </h1>
-            <button class="btn mt-4 mx-auto" onclick={() => edit.showModal()}>
+            <button class="btn mt-4 mx-auto" onclick={() => edit.modal.show()}>
                 <i class="fa-solid fa-plus"></i>
                 {$t("common.new")}
             </button>
         </div>
     </div>
+    <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-2">
+        <table class="table">
+          <!-- head -->
+          <thead>
+            <tr>
+              <th>{$t("clients.firstName")} {$t("clients.lastName")}</th>
+              <th>{$t("clients.adress")}</th>
+              <th>{$t("clients.email")}</th>
+              <th>{$t("clients.phone")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- row 1 -->
+             {#each clients as client }
+            <tr>
+                <th><a href="/clients/{client.$id}">{client.firstName} {client.lastName}</a></th>
+                <td>{client.adress}, {client.city} {client.zipCode}</td>
+                <td>{client.email}</td>
+                <td>{client.phone}</td>
+              </tr>
+             {/each}
+          </tbody>
+        </table>
+      </div>
+      <Pagination />
 </div>
-<Edit bind:modal={edit}/>
+<Edit bind:this={edit}/>

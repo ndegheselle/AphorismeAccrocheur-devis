@@ -1,5 +1,8 @@
 {
     "cancel": "Annuler",
+    "create": "Créer",
+    "detail": "Détail",
+    "fields.required": "* champs obligatoire",
     "new": "Nouveau",
     "parameters": "Paramètres",
     "error.generic": "Une erreur c'est produite."

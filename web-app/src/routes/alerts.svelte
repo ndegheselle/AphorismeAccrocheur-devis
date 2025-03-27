@@ -27,7 +27,7 @@
     }
 </script>
 
-<div class="fixed left-0 right-0 top-0 z-10">
+<div class="fixed left-0 right-0 top-0 z-1000">
     {#each stack as alert}
         <div role="alert" class="alert {getColor(alert.type)} m-2">
             <i class="fa-solid {getIcon(alert.type)}"></i>

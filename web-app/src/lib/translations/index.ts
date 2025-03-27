@@ -35,6 +35,13 @@ const config = ({
       loader: async () => (
         await import('./fr/clients.json')
       ).default,
+    },
+    {
+      locale: 'fr',
+      key: 'estimates',
+      loader: async () => (
+        await import('./fr/estimates.json')
+      ).default,
     }
   ]
 });
