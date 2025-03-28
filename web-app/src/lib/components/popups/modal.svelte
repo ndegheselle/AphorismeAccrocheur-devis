@@ -17,13 +17,13 @@
         return { promise, resolve, reject };
     }
 
-    function show() {
+    export function show() {
         deferred = createDeferred<boolean>();
         modal.showModal();
         return deferred.promise;
     }
 
-    function close(success: boolean = false) {
+    export function close(success: boolean = false) {
         modal.close();
         deferred.resolve(success);
     }

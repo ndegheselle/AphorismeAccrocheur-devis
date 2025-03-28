@@ -7,6 +7,7 @@
 
     let edit : Edit;
     let clients = $state<Client[]>([]);
+
     onMount(async() => {
         clients = await repository.getAll(25, 0);
     });
@@ -18,7 +19,7 @@
             <h1 class="text-center text-2xl font-bold">
                 Ajouter un nouveau client
             </h1>
-            <button class="btn mt-4 mx-auto" onclick={() => edit.modal.show()}>
+            <button class="btn mt-4 mx-auto" onclick={() => edit.show()}>
                 <i class="fa-solid fa-plus"></i>
                 {$t("common.new")}
             </button>

@@ -36,9 +36,9 @@
                         <i class="fa-solid fa-file-invoice"></i>
                         {$t("navigation.estimates")}
                     </h2>
-                    <button class="ms-auto btn btn-circle">
+                    <a class="ms-auto btn btn-circle" href="/estimates/new">
                         <i class="fa-solid fa-plus"></i>
-                    </button>
+                    </a>
                 </div>
 
                 <ul class="list bg-base-100 rounded-box shadow-md">

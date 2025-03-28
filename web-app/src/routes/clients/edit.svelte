@@ -2,32 +2,18 @@
     import { repository, Client } from "$lib/models/clients";
     import alerts from "$lib/stores/alerts.svelte"
     import { t } from "$lib/translations/index";
+    import Modal from "$lib/components/popups/modal.svelte";
+    import {clearErrors, displayErrors} from "$lib/base/errors";
 
     let fieldset: HTMLFieldSetElement;
     let client: Client = new Client();
-    /**
-     * Clean all displayed inputs errors
-     */
-    function clearErrors() {
-        fieldset.querySelectorAll(".input-error").forEach((input) => {
-            input.classList.remove("input-error");
-        });
-    }
+    let modal: Modal;
 
     async function save() {
-        clearErrors();
+        clearErrors(fieldset);
         let errors = await client.checkErrors();
         if (errors.length > 0) {
-            // Display input field with errors
-            errors.forEach((error) => {
-                const input = fieldset.querySelector(
-                    `[name="${error.property}"]`,
-                ) as HTMLInputElement;
-
-                if (input) {
-                    input.classList.add("input-error");
-                }
-            });
+            displayErrors(fieldset, errors);
             return;
         }
 
@@ -42,10 +28,14 @@
             alerts.error($t("clients.edit.error"));
         }
     }
-    let modal: HTMLDialogElement;
+
+    export function show()
+    {
+        modal.show();
+    }
 </script>
 
-<dialog class="modal" bind:this={modal}>
+<Modal bind:this={modal}>
     <fieldset class="fieldset w-md modal-box bg-base-200 border border-base-300 p-4 rounded-box" bind:this={fieldset}>
         <legend class="fieldset-legend">{$t("clients.new")}</legend>
         <div class="grid grid-cols-3 gap-2">
@@ -119,7 +109,4 @@
             <button class="btn btn-primary" onclick={() => save()}>{$t("common.create")}</button>
         </div>
     </fieldset>
-    <form method="dialog" class="modal-backdrop">
-        <button>close</button>
-    </form>
-</dialog>
+</Modal>
