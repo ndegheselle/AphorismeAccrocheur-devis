@@ -1,13 +1,14 @@
 <script lang="ts">
     import { repository, Client } from "$lib/models/clients";
-    import alerts from "$lib/stores/alerts.svelte"
+    import alerts from "$lib/stores/alerts.svelte";
     import { t } from "$lib/translations/index";
-    import Modal from "$lib/components/popups/modal.svelte";
-    import {clearErrors, displayErrors} from "$lib/base/errors";
+    import { clearErrors, displayErrors } from "$lib/base/errors";
+    import { createDeferred, Deferred } from "$lib/base/deferred";
 
     let fieldset: HTMLFieldSetElement;
     let client: Client = new Client();
-    let modal: Modal;
+    let deferred: Deferred<Client | null>;
+    let modal: HTMLDialogElement;
 
     async function save() {
         clearErrors(fieldset);
@@ -17,30 +18,46 @@
             return;
         }
 
-        try
-        {
+        try {
             // Create client
-            await repository.create(client);
-            modal.close();
-        }
-        catch
-        {
+            if (clientExist()) client = await repository.update(client);
+            else client = await repository.create(client);
+            close(true);
+        } catch {
             alerts.error($t("clients.edit.error"));
         }
     }
 
-    export function show()
-    {
+    export function show(_client: Client): Promise<Client | null>  {
+        deferred = createDeferred<Client | null>();
         modal.show();
+        return deferred.promise;
     }
+
+    export function close(success: boolean = false) {
+        modal.close();
+        deferred.resolve(success ? client : null);
+    }
+
+    function clientExist() {
+        return !!client.$id;
+    }
+
 </script>
 
-<Modal bind:this={modal}>
-    <fieldset class="fieldset w-md modal-box bg-base-200 border border-base-300 p-4 rounded-box" bind:this={fieldset}>
-        <legend class="fieldset-legend">{$t("clients.new")}</legend>
+<dialog bind:this={modal} class="modal">
+    <fieldset
+        class="fieldset w-md modal-box bg-base-200 border border-base-300 p-4 rounded-box"
+        bind:this={fieldset}
+    >
+        <legend class="fieldset-legend"
+            >{clientExist() ? $t("clients.edit") : $t("clients.new")}</legend
+        >
         <div class="grid grid-cols-3 gap-2">
             <div>
-                <label class="fieldset-label" for="firstName">{$t("clients.firstName")}</label>
+                <label class="fieldset-label" for="firstName"
+                    >{$t("clients.firstName")}</label
+                >
                 <input
                     type="text"
                     class="input"
@@ -50,7 +67,9 @@
                 />
             </div>
             <div class="col-span-2">
-                <label class="fieldset-label" for="lastName">{$t("clients.lastName")} *</label>
+                <label class="fieldset-label" for="lastName"
+                    >{$t("clients.lastName")} *</label
+                >
                 <input
                     type="text"
                     name="lastName"
@@ -59,7 +78,9 @@
                 />
             </div>
         </div>
-        <label class="fieldset-label" for="adress">{$t("clients.adress")} *</label>
+        <label class="fieldset-label" for="adress"
+            >{$t("clients.adress")} *</label
+        >
         <input
             type="text"
             class="input w-full"
@@ -69,7 +90,9 @@
 
         <div class="grid grid-cols-3 gap-2">
             <div class="col-span-2">
-                <label class="fieldset-label" for="city">{$t("clients.city")} *</label>
+                <label class="fieldset-label" for="city"
+                    >{$t("clients.city")} *</label
+                >
                 <input
                     type="text"
                     class="input"
@@ -105,8 +128,19 @@
         />
         <p class="fieldset-label">{$t("common.fields.required")}</p>
         <div class="modal-action">
-            <button class="btn" onclick={() => modal.close()}>{$t("common.cancel")}</button>
-            <button class="btn btn-primary" onclick={() => save()}>{$t("common.create")}</button>
+            <button class="btn" onclick={() => modal.close()}
+                >{$t("common.cancel")}</button
+            >
+            <button class="btn btn-primary" onclick={() => save()}
+                >{clientExist()
+                    ? $t("common.update")
+                    : $t("common.create")}</button
+            >
         </div>
     </fieldset>
-</Modal>
+    <div class="modal-backdrop">
+        <button onclick={() => close()}>
+            Close
+        </button>
+    </div>
+</dialog>

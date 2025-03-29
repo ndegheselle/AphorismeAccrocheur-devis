@@ -11,6 +11,14 @@
     onMount(async() => {
         clients = await repository.getAll(25, 0);
     });
+
+    async function create()
+    {
+        let client = new Client();
+        if (await edit.show(client) == false)
+          return;
+        clients.push(client);
+    }
 </script>
 
 <div class="container mx-auto py-4">
@@ -19,7 +27,7 @@
             <h1 class="text-center text-2xl font-bold">
                 Ajouter un nouveau client
             </h1>
-            <button class="btn mt-4 mx-auto" onclick={() => edit.show()}>
+            <button class="btn mt-4 mx-auto" onclick={create}>
                 <i class="fa-solid fa-plus"></i>
                 {$t("common.new")}
             </button>
@@ -34,6 +42,7 @@
               <th>{$t("clients.adress")}</th>
               <th>{$t("clients.email")}</th>
               <th>{$t("clients.phone")}</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>

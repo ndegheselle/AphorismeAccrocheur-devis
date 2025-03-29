@@ -1,5 +1,6 @@
 <script>
-    import Alerts from "./alerts.svelte";
+    import Alerts from "$lib/components/popups/alerts.svelte";
+    import Confirm from "$lib/components/popups/confirm.svelte";
     import Navigation from "./navigation.svelte";
     import Footer from "./footer.svelte";
 </script>
@@ -9,5 +10,6 @@
     <Navigation />
     <slot />
     <Footer />
+    <Confirm />
 </div>
 
