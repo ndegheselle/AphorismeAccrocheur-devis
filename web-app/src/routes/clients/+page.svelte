@@ -14,8 +14,8 @@
 
     async function create()
     {
-        let client = new Client();
-        if (await edit.show(client) == false)
+        let client = await edit.show(new Client());
+        if (client == null)
           return;
         clients.push(client);
     }

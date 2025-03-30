@@ -5,14 +5,37 @@ import { IsNotEmpty, validate, ValidationError } from "class-validator";
 
 import { Client } from './clients';
 
+export class EstimateLine
+{
+    @IsNotEmpty()
+    name: string;
+    @IsNotEmpty()
+    unitPrice: number;
+    quantity: number = 1;
+    tax: number = 20;
+    discount: number = 0;
+
+    get totalWithoutTax(): number {
+        return this.unitPrice * this.quantity ;
+    }
+    get totalTax(): number {
+        return this.totalWithoutTax * this.tax / 100;
+    }
+    get total(): number {
+        return (this.totalWithoutTax + this.totalTax) * (1 - this.discount / 100);
+    }
+}
+
 export class Estimate {
     $id?: string;
     @IsNotEmpty()
-    issueDate: Date;
+    issueDate: Date = new Date(Date.now());
     @IsNotEmpty()
     validityDate: string;
+    reference: string = "REF-0001";
 
     client: Client;
+    lines: EstimateLine[] = [];
 
     async checkErrors(): Promise<ValidationError[]> {
         return await validate(this);

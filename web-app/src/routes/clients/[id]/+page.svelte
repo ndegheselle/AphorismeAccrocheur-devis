@@ -85,7 +85,7 @@
                         <i class="fa-solid fa-file-invoice"></i>
                         {$t("navigation.estimates")}
                     </h2>
-                    <a class="ms-auto btn btn-circle" href="/estimates/new">
+                    <a class="ms-auto btn btn-circle" href="/estimates/new?clientId={client?.$id}" aria-label="Add estimate"> 
                         <i class="fa-solid fa-plus"></i>
                     </a>
                 </div>
