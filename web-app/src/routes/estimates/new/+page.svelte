@@ -83,7 +83,7 @@
     }
 </script>
 
-<div class="container mx-auto py-4">
+<div class="container mx-auto py-4 h-full grid">
     <div class="flex">
         <h3 class="text-2xl my-auto font-thin">Nouveau devis</h3>
         <button
@@ -95,7 +95,7 @@
         </button>
     </div>
     <div
-        class="mt-2 overflow-x-auto rounded-box border border-base-content/5 bg-base-200 max-h-[60vh]"
+        class="mt-2 overflow-x-auto rounded-box border border-base-content/5 bg-base-200 "
     >
         <table class="table table-xs table-pin-rows table-pin-cols">
             <thead>

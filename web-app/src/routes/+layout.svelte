@@ -5,7 +5,7 @@
     import Footer from "./footer.svelte";
 </script>
 
-<div class="min-h-screen flex flex-col">
+<div class="min-h-screen h-full flex flex-col">
     <Alerts />
     <Navigation />
     <slot />
