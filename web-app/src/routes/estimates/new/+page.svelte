@@ -5,6 +5,8 @@
     import { repository, Client } from "$lib/models/clients";
     import { Estimate, EstimateLine } from "$lib/models/estimates";
     import LineEditModal from "./LineEditModal.svelte";
+    import type {DndEvent, Item} from "svelte-dnd-action";
+    import { dndzone } from "svelte-dnd-action";
 
     let client = $state<Client | null>(null);
     let lines = $state<EstimateLine[]>([]);
@@ -24,10 +26,7 @@
         reference: createRandomRef(),
         discountOnTotal: 0,
         issueDate: new Date().toISOString().split("T")[0],
-        // Today + 1 month
-        validityDate: new Date(new Date().setMonth(new Date().getMonth() + 1))
-            .toISOString()
-            .split("T")[0],
+        validityDate: null,
     });
 
     onMount(async () => {
@@ -83,19 +82,26 @@
     }
 </script>
 
-<div class="container mx-auto py-4 h-full grid">
+<div class="container mx-auto py-4 h-full flex flex-col">
     <div class="flex">
-        <h3 class="text-2xl my-auto font-thin">Nouveau devis</h3>
+        <input
+            type="text"
+            class="input input-ghost text-2xl my-auto font-thin w-full"
+            value="Nouveau devis"
+        />
+        <button class="ms-2 btn btn-primary" onclick={add}>
+            <i class="fa-solid fa-save"></i> Sauvegarder
+        </button>
         <button
-            class="ms-auto btn btn-circle"
-            aria-label="Ajouter ligne"
+            class="ms-2 btn btn-circle"
+            aria-label="Ajouter une ligne"
             onclick={add}
         >
             <i class="fa-solid fa-plus"></i>
         </button>
     </div>
     <div
-        class="mt-2 overflow-x-auto rounded-box border border-base-content/5 bg-base-200 "
+        class="flex-grow overflow-y-auto mt-2 overflow-x-auto rounded-box border border-base-content/5 bg-base-200"
     >
         <table class="table table-xs table-pin-rows table-pin-cols">
             <thead>
@@ -108,7 +114,8 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody
+            >
                 {#each lines as line}
                     <tr>
                         <td>{line.name}</td>
@@ -134,8 +141,8 @@
             </tbody>
         </table>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 mt-2 gap-2">
-        <div class="card bg-base-200 shadow-md min-h-40">
+    <div class="grid grid-cols-1 md:grid-cols-6 mt-2 gap-2">
+        <div class="col-span-2 card bg-base-200 shadow-md min-h-40">
             {#if client}
                 <div class="card-body py-2">
                     <div class="flex">
@@ -169,7 +176,7 @@
                 </div>
             {/if}
         </div>
-        <div class="card bg-base-200 shadow-md">
+        <div class="col-span-2 card bg-base-200 shadow-md">
             <div class="card-body py-2">
                 <fieldset class="fieldset">
                     <legend class="fieldset-legend">Infos</legend>
@@ -212,10 +219,12 @@
             </div>
         </div>
 
-        <div class="ms-auto card bg-base-200 shadow-md">
+        <div
+            class="card bg-base-200 shadow-md col-span-2 lg:col-span-1 lg:col-start-6 lg:col-end-7"
+        >
             <div class="card-body py-2">
                 <h2 class="card-title">Total</h2>
-                
+
                 <label class="input w-full">
                     Réduction (%)
                     <input
@@ -247,9 +256,7 @@
                         <span class="ms-auto text-right"
                             >{round(
                                 totalTTC *
-                                    (1 -
-                                        estimateInfos.discountOnTotal /
-                                            100),
+                                    (1 - estimateInfos.discountOnTotal / 100),
                             )}
                             €</span
                         >
