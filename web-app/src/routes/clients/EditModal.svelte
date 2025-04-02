@@ -128,7 +128,7 @@
         />
         <p class="fieldset-label">{$t("common.fields.required")}</p>
         <div class="modal-action">
-            <button class="btn" onclick={() => modal.close()}
+            <button class="btn" onclick={() => close()}
                 >{$t("common.cancel")}</button
             >
             <button class="btn btn-primary" onclick={() => save()}

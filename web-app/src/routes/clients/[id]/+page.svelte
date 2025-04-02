@@ -6,7 +6,7 @@
     import confirmation from "$lib/stores/confirm.svelte";
     import { goto } from "$app/navigation";
     import alerts from "$lib/stores/alerts.svelte";
-    import Edit from "../edit.svelte";
+    import Edit from "../EditModal.svelte";
 
     let editModal: Edit;
     let client: Client | undefined;

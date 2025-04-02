@@ -3,16 +3,18 @@
     import { page } from "$app/state";
     import { onMount } from "svelte";
     import { repository, Client } from "$lib/models/clients";
-    import { Estimate, EstimateLine } from "$lib/models/estimates";
+    import { EstimateLine } from "$lib/models/estimates";
     import LineEditModal from "./LineEditModal.svelte";
-    import type {DndEvent, Item} from "svelte-dnd-action";
-    import { dndzone } from "svelte-dnd-action";
+    import EditClientModal from "../../clients/EditModal.svelte";
+    import SelectClientModal from "../../clients/SelectModal.svelte";
 
     let client = $state<Client | null>(null);
     let lines = $state<EstimateLine[]>([]);
     let selectedLine: EstimateLine | null = null;
     let editModal: LineEditModal;
     let popover: HTMLUListElement | null = null;
+    let editClientModal : EditClientModal;
+    let selectClientModal: SelectClientModal;
 
     let totalHT = $derived(
         lines.reduce((acc, line) => acc + line.totalWithoutTax, 0),
@@ -60,6 +62,16 @@
         if (index !== -1) {
             lines[index] = edited;
         }
+    }
+
+    async function createClient()
+    {
+        client = await editClientModal.show(new Client());
+    }
+
+    async function selectClient()
+    {
+        client = await selectClientModal.show(new Client());
     }
 
     /**
@@ -114,8 +126,7 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody
-            >
+            <tbody>
                 {#each lines as line}
                     <tr>
                         <td>{line.name}</td>
@@ -154,8 +165,9 @@
                         <button
                             class="btn btn-circle ms-auto"
                             aria-label="Modifier client"
+                            onclick={() => client = null}
                         >
-                            <i class="fa-solid fa-pen"></i>
+                            <i class="fa-solid fa-close"></i>
                         </button>
                     </div>
 
@@ -169,10 +181,17 @@
                 </div>
             {:else}
                 <div class="card-body py-2">
-                    <button class="btn m-auto">
-                        <i class="fa-solid fa-user"></i>
-                        Sélectionner un client
-                    </button>
+                    <div class=" m-auto flex flex-col">
+                        <button class="btn" onclick={selectClient}>
+                            <i class="fa-solid fa-user"></i>
+                            Sélectionner un client
+                        </button>
+                        <div class="divider">OU</div>
+                        <button class="btn mx-auto" onclick={createClient}>
+                            <i class="fa-solid fa-plus"></i>
+                            Créer un client
+                        </button>
+                    </div>
                 </div>
             {/if}
         </div>
@@ -288,4 +307,7 @@
         >
     </li>
 </ul>
+
 <LineEditModal bind:this={editModal} />
+<EditClientModal bind:this={editClientModal} />
+<SelectClientModal bind:this={selectClientModal} />

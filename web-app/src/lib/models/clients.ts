@@ -3,6 +3,7 @@ import auth from '$lib/stores/auth.svelte';
 import { ID, Permission, Role, Query } from "appwrite";
 import { IsEmail, IsOptional, IsNotEmpty, IsPhoneNumber, validate, ValidationError } from "class-validator";
 import { copyFrom } from '$lib/base/class';
+import { PaginatedResults} from '$lib/models/results';
 
 export class Client {
     $id?: string;
@@ -23,6 +24,13 @@ export class Client {
     @IsPhoneNumber()
     phone?: string = undefined;
 
+    get fullName() : string {
+        return `${this.firstName} ${this.lastName}`;
+    }
+    get fullAddress() : string {
+        return `${this.adress}, ${this.city}, ${this.zipCode}`;
+    }
+
     async checkErrors() : Promise<ValidationError[]> {
         return await validate(this);
     }
@@ -41,14 +49,14 @@ async function create(client: Client) : Promise<Client>{
     return copyFrom(Client, result);
 }
 
-async function getAll(limit: number, offset: number): Promise<Client[]>
+async function getAll(page: number, capacity: number): Promise<PaginatedResults<Client>>
 {
     let result = await databases.listDocuments(databaseId, collections.clients, [
-        Query.limit(limit),
-        Query.offset(offset)
+        Query.limit(capacity),
+        Query.offset(page * capacity)
     ]);
     let clients: Client[] = result.documents.map(doc => copyFrom(Client, doc));
-    return clients;
+    return new PaginatedResults<Client>(clients, result.total, page, capacity);
 }
 
 async function getById(id: string): Promise<Client>
