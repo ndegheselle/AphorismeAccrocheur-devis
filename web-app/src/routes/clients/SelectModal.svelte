@@ -3,20 +3,23 @@
     import { repository, Client } from "$lib/models/clients";
     import { t } from "$lib/translations/index";
     import { createDeferred, Deferred } from "$lib/base/deferred";
-    import Pagination from "$lib/components/navigation/pagination.svelte";
+    import Pagination from "$lib/components/navigation/Pagination.svelte";
 
-    let selectedClient: Client = new Client();
     let deferred: Deferred<Client | null>;
     let modal: HTMLDialogElement;
 
     let clients = $state<Client[]>([]);
+    let selectedClient = $state<Client | null>(null);
 
     let page = $state<number>(1);
     let total = $state<number>(1);
-    let capacity = $state<number>(1);
+    let capacity = $state<number>(25);
+    let searchText = $state<string>("");
+
 
     $effect(() => {
-        repository.getAll(page, capacity).then((paginated) => {
+        selectedClient = null;
+        repository.search(searchText, page, capacity).then((paginated) => {
             clients = paginated.results;
             total = paginated.total;
         });
@@ -39,39 +42,37 @@
 </script>
 
 <dialog bind:this={modal} class="modal">
-    <div class="modal-box">
+    <div class="modal-box min-h-[30rem] flex flex-col">
         <button
             class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
             onclick={() => close()}>✕</button
         >
         <h3 class="text-lg font-bold">Sélectionner un client</h3>
 
-        <label class="input w-full mt-2">
+        <label class="input w-full mt-2 input-sm">
             <i class="fa-solid fa-magnifying-glass opacity-50"></i>
-            <input type="search" required placeholder="Recherche" />
+            <input type="search" required placeholder="Recherche" bind:value={searchText} />
         </label>
-        <ul class="list bg-base-100 rounded-box shadow-md">
+        <ul class="list bg-base-100 rounded-box shadow-md mt-1">
             {#each clients as client}
-                <li class="list-row">
-                    <div>
-                        <div>{client.fullName}</div>
-                        <div class="text-xs uppercase font-semibold opacity-60">
-                            {client.fullAddress}
-                        </div>
+                <li class="list-row p-2 cursor-pointer" class:bg-primary={client == selectedClient} onclick={() => (selectedClient = client)} >
+                    <div>{client.fullName}</div>
+                    <div class="ms-auto my-auto text-xs uppercase font-semibold opacity-60">
+                        {client.fullAddress}
                     </div>
                 </li>
             {/each}
         </ul>
 
-        <div class="flex">
+        <div class="mt-auto pt-1">
             <Pagination bind:total bind:page bind:capacity />
         </div>
 
-        <div class="modal-action">
+        <div class="modal-action mt-1">
             <button class="btn" onclick={() => close()}
                 >{$t("common.cancel")}</button
             >
-            <button class="btn btn-primary" onclick={select}
+            <button class="btn btn-primary" class:btn-disabled={selectedClient == null} onclick={select}
                 >Sélectionner</button
             >
         </div>

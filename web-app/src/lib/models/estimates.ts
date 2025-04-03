@@ -1,16 +1,13 @@
 import { databases, databaseId, collections } from '$lib/appwrite';
 import auth from '$lib/stores/auth.svelte';
 import { ID, Permission, Role, Query } from "appwrite";
-import { IsNotEmpty, validate, ValidationError } from "class-validator";
 
 import { Client } from './clients';
 
 export class EstimateLine
 {
-    @IsNotEmpty()
     name: string;
-    @IsNotEmpty()
-    unitPrice: number;
+    unitPrice: number = 1;
     quantity: number = 1;
     tax: number = 20;
     discount: number = 0;
@@ -28,18 +25,13 @@ export class EstimateLine
 
 export class Estimate {
     $id?: string;
-    @IsNotEmpty()
-    issueDate: Date = new Date(Date.now());
-    @IsNotEmpty()
-    validityDate: string;
+
+    discount: number = 0;
     reference: string = "REF-0001";
-
-    client: Client;
+    issueDate: Date| null = null;
+    validityDate: Date| null = null;
+    client: Client | null = null;
     lines: EstimateLine[] = [];
-
-    async checkErrors(): Promise<ValidationError[]> {
-        return await validate(this);
-    }
 }
 
 async function create(estimate: Estimate) {

@@ -1,19 +1,30 @@
 <script lang="ts">
-    import { t } from "$lib/translations/index";
     import { page } from "$app/state";
     import { onMount } from "svelte";
-    import { repository, Client } from "$lib/models/clients";
-    import { EstimateLine } from "$lib/models/estimates";
+    import {
+        repository as repositoryClient,
+        Client,
+    } from "$lib/models/clients";
+    import { repository, EstimateLine, Estimate } from "$lib/models/estimates";
+    import { hasErrors, errors } from "$lib/models/estimates.svelte";
     import LineEditModal from "./LineEditModal.svelte";
     import EditClientModal from "../../clients/EditModal.svelte";
     import SelectClientModal from "../../clients/SelectModal.svelte";
+    import { createRandomRef, round } from "$lib/base/utils";
 
     let client = $state<Client | null>(null);
     let lines = $state<EstimateLine[]>([]);
+    let estimateInfos = $state({
+        reference: createRandomRef(),
+        discountOnTotal: 0,
+        issueDate: new Date().toISOString().split("T")[0],
+        validityDate: null,
+    });
+
     let selectedLine: EstimateLine | null = null;
     let editModal: LineEditModal;
     let popover: HTMLUListElement | null = null;
-    let editClientModal : EditClientModal;
+    let editClientModal: EditClientModal;
     let selectClientModal: SelectClientModal;
 
     let totalHT = $derived(
@@ -24,17 +35,10 @@
     );
     let totalTTC = $derived(lines.reduce((acc, line) => acc + line.total, 0));
 
-    let estimateInfos = $state({
-        reference: createRandomRef(),
-        discountOnTotal: 0,
-        issueDate: new Date().toISOString().split("T")[0],
-        validityDate: null,
-    });
-
     onMount(async () => {
         let clientId = page.url.searchParams.get("clientId");
         if (clientId) {
-            client = await repository.getById(clientId);
+            client = await repositoryClient.getById(clientId);
         }
     });
 
@@ -64,33 +68,28 @@
         }
     }
 
-    async function createClient()
-    {
+    async function createClient() {
         client = await editClientModal.show(new Client());
     }
 
-    async function selectClient()
-    {
+    async function selectClient() {
         client = await selectClientModal.show(new Client());
     }
 
-    /**
-     * Round to 2 decimal places
-     * @param num
-     */
-    function round(num: number): number {
-        return Math.round(num * 100) / 100;
-    }
+    async function save() {
+        let estimate = new Estimate();
+        estimate.client = client;
+        estimate.lines = lines;
+        estimate.reference = estimateInfos.reference;
+        estimate.issueDate = estimateInfos.issueDate
+            ? new Date(Date.parse(estimateInfos.issueDate))
+            : null;
+        estimate.validityDate = estimateInfos.validityDate
+            ? new Date(Date.parse(estimateInfos.validityDate))
+            : null;
+        estimate.discount = estimateInfos.discountOnTotal;
 
-    function createRandomString(length: number, chars: string): string {
-        let result = "";
-        for (let i = 0; i < length; i++) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return result;
-    }
-    function createRandomRef() {
-        return `${createRandomString(3, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")}-${createRandomString(6, "0123456789")}`;
+        if (hasErrors(estimate)) return;
     }
 </script>
 
@@ -101,7 +100,7 @@
             class="input input-ghost text-2xl my-auto font-thin w-full"
             value="Nouveau devis"
         />
-        <button class="ms-2 btn btn-primary" onclick={add}>
+        <button class="ms-2 btn btn-primary" onclick={save}>
             <i class="fa-solid fa-save"></i> Sauvegarder
         </button>
         <button
@@ -153,7 +152,10 @@
         </table>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-6 mt-2 gap-2">
-        <div class="col-span-2 card bg-base-200 shadow-md min-h-40">
+        <div
+            class="col-span-2 card bg-base-200 shadow-md min-h-40"
+            class:border-error={errors.client}
+        >
             {#if client}
                 <div class="card-body py-2">
                     <div class="flex">
@@ -165,7 +167,7 @@
                         <button
                             class="btn btn-circle ms-auto"
                             aria-label="Modifier client"
-                            onclick={() => client = null}
+                            onclick={() => (client = null)}
                         >
                             <i class="fa-solid fa-close"></i>
                         </button>
@@ -197,8 +199,8 @@
         </div>
         <div class="col-span-2 card bg-base-200 shadow-md">
             <div class="card-body py-2">
-                <fieldset class="fieldset">
-                    <legend class="fieldset-legend">Infos</legend>
+                <h2 class="card-title">Infos</h2>
+                <fieldset class="fieldset p-0">
                     <label
                         class="input w-full tooltip tooltip-left"
                         data-tip="Référence"
@@ -208,8 +210,10 @@
                             type="text"
                             class="grow"
                             placeholder="Référence"
+                            class:input-error={errors.reference}
                             bind:value={estimateInfos.reference}
                         />
+                        <p class="fieldset-label text-error">{errors.reference}</p>
                     </label>
                     <label
                         class="input w-full tooltip tooltip-left"
@@ -219,8 +223,10 @@
                             type="date"
                             class="grow"
                             placeholder="Date"
+                            class:input-error={errors.issueDate}
                             bind:value={estimateInfos.issueDate}
                         />
+                        <p class="fieldset-label text-error">{errors.issueDate}</p>
                     </label>
                     <label
                         class="input w-full tooltip tooltip-left"
@@ -231,8 +237,10 @@
                             type="date"
                             class="grow"
                             placeholder="Date d'échéance"
+                            class:input-error={errors.validityDate}
                             bind:value={estimateInfos.validityDate}
                         />
+                        <p class="fieldset-label text-error">{errors.validityDate}</p>
                     </label>
                 </fieldset>
             </div>
@@ -311,3 +319,10 @@
 <LineEditModal bind:this={editModal} />
 <EditClientModal bind:this={editClientModal} />
 <SelectClientModal bind:this={selectClientModal} />
+
+<style>
+    .border-error {
+        border-color: var(--color-error) !important;
+        border-width: 2px !important;
+    }
+</style>

@@ -1,27 +1,18 @@
 import { databases, databaseId, collections } from '$lib/appwrite';
 import auth from '$lib/stores/auth.svelte';
 import { ID, Permission, Role, Query } from "appwrite";
-import { IsEmail, IsOptional, IsNotEmpty, IsPhoneNumber, validate, ValidationError } from "class-validator";
 import { copyFrom } from '$lib/base/class';
-import { PaginatedResults} from '$lib/models/results';
+import { PaginatedResults} from '$lib/base/results';
 
 export class Client {
     $id?: string;
     firstName: string;
-    @IsNotEmpty()
     lastName: string;
-    @IsNotEmpty()
     adress: string;
-    @IsNotEmpty()
     city: string;
-    @IsNotEmpty()
     zipCode: string;
 
-    @IsOptional()
-    @IsEmail()
     email?: string = undefined;
-    @IsOptional()
-    @IsPhoneNumber()
     phone?: string = undefined;
 
     get fullName() : string {
@@ -29,10 +20,6 @@ export class Client {
     }
     get fullAddress() : string {
         return `${this.adress}, ${this.city}, ${this.zipCode}`;
-    }
-
-    async checkErrors() : Promise<ValidationError[]> {
-        return await validate(this);
     }
 }
 
@@ -53,11 +40,29 @@ async function getAll(page: number, capacity: number): Promise<PaginatedResults<
 {
     let result = await databases.listDocuments(databaseId, collections.clients, [
         Query.limit(capacity),
-        Query.offset(page * capacity)
+        Query.offset((page - 1) * capacity)
     ]);
     let clients: Client[] = result.documents.map(doc => copyFrom(Client, doc));
     return new PaginatedResults<Client>(clients, result.total, page, capacity);
 }
+
+async function search(search: string, page: number, capacity: number): Promise<PaginatedResults<Client>>
+{
+    let result = await databases.listDocuments(databaseId, collections.clients, [
+        Query.limit(capacity),
+        Query.offset((page - 1) * capacity),
+        Query.or([
+            Query.contains('firstName', search),
+            Query.contains('lastName', search),
+            Query.contains('adress', search),
+            Query.contains('city', search),
+            Query.contains('zipCode', search)
+        ])
+    ]);
+    let clients: Client[] = result.documents.map(doc => copyFrom(Client, doc));
+    return new PaginatedResults<Client>(clients, result.total, page, capacity);
+}
+
 
 async function getById(id: string): Promise<Client>
 {
@@ -84,5 +89,6 @@ export const repository = {
     getAll,
     getById,
     update,
-    remove
+    remove,
+    search
 };

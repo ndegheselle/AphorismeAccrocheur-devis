@@ -1,23 +1,18 @@
 <script lang="ts">
     import { repository, Client } from "$lib/models/clients";
+    import { hasErrors, errors } from "$lib/models/clients.svelte";
     import alerts from "$lib/stores/alerts.svelte";
     import { t } from "$lib/translations/index";
-    import { clearErrors, displayErrors } from "$lib/base/errors";
     import { createDeferred, Deferred } from "$lib/base/deferred";
 
     let fieldset: HTMLFieldSetElement;
-    let client: Client = new Client();
+    let client = $state<Client>(new Client());
     let deferred: Deferred<Client | null>;
     let modal: HTMLDialogElement;
 
     async function save() {
-        clearErrors(fieldset);
-        let errors = await client.checkErrors();
-        if (errors.length > 0) {
-            displayErrors(fieldset, errors);
-            return;
-        }
-
+        if (hasErrors(client)) return;
+        
         try {
             // Create client
             if (clientExist()) client = await repository.update(client);
@@ -73,21 +68,26 @@
                 <input
                     type="text"
                     name="lastName"
+                    class:input-error={errors.lastName}
                     class="input"
                     bind:value={client.lastName}
                 />
+                <p class="fieldset-label text-error">{errors.lastName}</p>
             </div>
         </div>
-        <label class="fieldset-label" for="adress"
-            >{$t("clients.adress")} *</label
-        >
-        <input
-            type="text"
-            class="input w-full"
-            name="adress"
-            bind:value={client.adress}
-        />
-
+        <div>
+            <label class="fieldset-label" for="adress"
+                >{$t("clients.adress")} *</label
+            >
+            <input
+                type="text"
+                class="input w-full"
+                class:input-error={errors.adress}
+                name="adress"
+                bind:value={client.adress}
+            />
+            <p class="fieldset-label text-error">{errors.adress}</p>
+        </div>
         <div class="grid grid-cols-3 gap-2">
             <div class="col-span-2">
                 <label class="fieldset-label" for="city"
@@ -96,9 +96,11 @@
                 <input
                     type="text"
                     class="input"
+                    class:input-error={errors.city}
                     name="city"
                     bind:value={client.city}
                 />
+                <p class="fieldset-label text-error">{errors.city}</p>
             </div>
             <div class="col-span-1">
                 <label class="fieldset-label" for="zipCode"
@@ -107,25 +109,35 @@
                 <input
                     type="text"
                     class="input"
+                    class:input-error={errors.zipCode}
                     name="zipCode"
                     bind:value={client.zipCode}
                 />
+                <p class="fieldset-label text-error">{errors.zipCode}</p>
             </div>
         </div>
-        <label class="fieldset-label" for="email">{$t("clients.email")}</label>
-        <input
-            type="email"
-            class="input w-full"
-            name="email"
-            bind:value={client.email}
-        />
-        <label class="fieldset-label" for="phone">{$t("clients.phone")}</label>
-        <input
-            type="tel"
-            class="input w-full"
-            name="phone"
-            bind:value={client.phone}
-        />
+        <div>
+            <label class="fieldset-label" for="email">{$t("clients.email")}</label>
+            <input
+                type="email"
+                class="input w-full"
+                class:input-error={errors.email}
+                name="email"
+                bind:value={client.email}
+            />
+            <p class="fieldset-label text-error">{errors.email}</p>
+        </div>
+        <div>
+            <label class="fieldset-label" for="phone">{$t("clients.phone")}</label>
+            <input
+                type="tel"
+                class="input w-full"
+                class:input-error={errors.phone}
+                name="phone"
+                bind:value={client.phone}
+            />
+            <p class="fieldset-label text-error">{errors.phone}</p>
+        </div>
         <p class="fieldset-label">{$t("common.fields.required")}</p>
         <div class="modal-action">
             <button class="btn" onclick={() => close()}

@@ -1,7 +1,6 @@
 <script lang="ts">
     import { createDeferred, Deferred } from "$lib/base/deferred";
     import { EstimateLine } from "$lib/models/estimates";
-    import { clearErrors, displayErrors } from "$lib/base/errors";
     import { t } from "$lib/translations/index";
 
     let fieldset: HTMLFieldSetElement;
