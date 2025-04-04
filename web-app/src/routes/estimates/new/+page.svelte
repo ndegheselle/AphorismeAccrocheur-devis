@@ -204,44 +204,46 @@
                     <label
                         class="input w-full tooltip tooltip-left"
                         data-tip="Référence"
+                        class:input-error={errors.reference}
                     >
                         <i class="fa-solid fa-hashtag opacity-50"></i>
                         <input
                             type="text"
                             class="grow"
                             placeholder="Référence"
-                            class:input-error={errors.reference}
                             bind:value={estimateInfos.reference}
                         />
-                        <p class="fieldset-label text-error">{errors.reference}</p>
                     </label>
+                    <p class="fieldset-label text-error">{errors.reference}</p>
                     <label
                         class="input w-full tooltip tooltip-left"
                         data-tip="Date"
+                        class:input-error={errors.issueDate}
                         ><i class="fa-solid fa-calendar-day opacity-50"></i>
                         <input
                             type="date"
                             class="grow"
                             placeholder="Date"
-                            class:input-error={errors.issueDate}
                             bind:value={estimateInfos.issueDate}
                         />
-                        <p class="fieldset-label text-error">{errors.issueDate}</p>
                     </label>
+                    <p class="fieldset-label text-error">{errors.issueDate}</p>
                     <label
                         class="input w-full tooltip tooltip-left"
                         data-tip="Date d'échéance"
+                        class:input-error={errors.validityDate}
                     >
                         <i class="fa-solid fa-calendar-xmark opacity-50"></i>
                         <input
                             type="date"
                             class="grow"
                             placeholder="Date d'échéance"
-                            class:input-error={errors.validityDate}
                             bind:value={estimateInfos.validityDate}
                         />
-                        <p class="fieldset-label text-error">{errors.validityDate}</p>
                     </label>
+                    <p class="fieldset-label text-error">
+                        {errors.validityDate}
+                    </p>
                 </fieldset>
             </div>
         </div>
