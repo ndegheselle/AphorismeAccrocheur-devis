@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { t } from "$lib/translations/index";
     import { page } from "$app/state";
     import { onMount } from "svelte";
     import {
@@ -11,10 +12,12 @@
     import EditClientModal from "../../clients/EditModal.svelte";
     import SelectClientModal from "../../clients/SelectModal.svelte";
     import { createRandomRef, round } from "$lib/base/utils";
+    import alerts from "$lib/stores/alerts.svelte";
 
     let client = $state<Client | null>(null);
     let lines = $state<EstimateLine[]>([]);
     let estimateInfos = $state({
+        name: "Devis",
         reference: createRandomRef(),
         discountOnTotal: 0,
         issueDate: new Date().toISOString().split("T")[0],
@@ -78,6 +81,7 @@
 
     async function save() {
         let estimate = new Estimate();
+        estimate.name = estimateInfos.name;
         estimate.client = client;
         estimate.lines = lines;
         estimate.reference = estimateInfos.reference;
@@ -89,7 +93,17 @@
             : null;
         estimate.discount = estimateInfos.discountOnTotal;
 
-        if (hasErrors(estimate)) return;
+        if (hasErrors(estimate)) {
+            alerts.error(Object.values(errors).filter(Boolean).join(", "));
+            return;
+        }
+
+        try {
+            await repository.create(estimate);
+        } catch (e) {
+            console.error(e);
+            alerts.error($t("estimates.create.error"));
+        }
     }
 </script>
 
@@ -98,7 +112,7 @@
         <input
             type="text"
             class="input input-ghost text-2xl my-auto font-thin w-full"
-            value="Nouveau devis"
+            bind:value={estimateInfos.name}
         />
         <button class="ms-2 btn btn-primary" onclick={save}>
             <i class="fa-solid fa-save"></i> Sauvegarder

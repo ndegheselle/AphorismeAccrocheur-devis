@@ -36,7 +36,7 @@ export function hasErrors(estimate: Estimate): boolean {
 
     // Validate lines
     if (estimate.lines.length === 0) {
-        errors.lines = 'Il doit y avoir au moins une ligne';
+        errors.lines = 'Il doit y avoir au moins une ligne dans le devis';
     }
 
     // Validate validityDate is superior to issueDate

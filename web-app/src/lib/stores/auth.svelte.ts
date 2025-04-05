@@ -1,6 +1,7 @@
 import { account } from '$lib/appwrite';
 import { ID } from "appwrite";
 import type { Models } from 'appwrite';
+import { goto } from "$app/navigation";
 
 type User = Models.User<Models.Preferences>;
 let currentUser = $state<User | null>(null);
@@ -31,6 +32,7 @@ async function login(email: string, password: string) {
 async function logout() {
     await account.deleteSession('current');
     currentUser = null;
+    goto("/user/login");
 }
 
 async function register(email: string, password: string, name: string)

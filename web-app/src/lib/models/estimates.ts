@@ -25,7 +25,7 @@ export class EstimateLine
 
 export class Estimate {
     $id?: string;
-
+    name: string;
     discount: number = 0;
     reference: string = "REF-0001";
     issueDate: Date| null = null;
@@ -38,7 +38,8 @@ async function create(estimate: Estimate) {
     if (auth.currentUser == null)
         throw new Error("User is not connected.");
 
-    return await databases.createDocument(databaseId, collections.clients, ID.unique(), estimate,
+    console.log("Creating estimate", estimate);
+    return await databases.createDocument(databaseId, collections.estimates, ID.unique(), estimate,
         [
             Permission.read(Role.user(auth.currentUser.$id)),
             Permission.update(Role.user(auth.currentUser.$id)),
