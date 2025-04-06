@@ -8,6 +8,15 @@ export function round(num: number): number {
 }
 
 /**
+ * Format a date to "YYYY-MM-DD" format
+ * @param date date to format
+ * @returns {string} Formatted date
+ */
+export function formatDate(date: Date | undefined): string {
+    return date ? date.toISOString().split("T")[0] : "";
+}
+
+/**
  * Create a random string of a given length using the specified characters
  * @param length given length of the string
  * @param chars characters to use for the string

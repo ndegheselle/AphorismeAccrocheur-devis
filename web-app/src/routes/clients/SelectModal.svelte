@@ -16,7 +16,6 @@
     let capacity = $state<number>(25);
     let searchText = $state<string>("");
 
-
     $effect(() => {
         selectedClient = null;
         repository.search(searchText, page, capacity).then((paginated) => {

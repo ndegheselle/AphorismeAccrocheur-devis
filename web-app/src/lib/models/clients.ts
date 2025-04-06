@@ -63,7 +63,6 @@ async function search(search: string, page: number, capacity: number): Promise<P
     return new PaginatedResults<Client>(clients, result.total, page, capacity);
 }
 
-
 async function getById(id: string): Promise<Client>
 {
     let result = await databases.getDocument(databaseId, collections.clients, id);

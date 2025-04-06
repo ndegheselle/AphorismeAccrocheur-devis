@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { t } from "$lib/translations/index";
   import Edit from "./EditModal.svelte";
   import { repository, Client } from "$lib/models/clients";
@@ -10,10 +9,11 @@
 
   let page = $state<number>(1);
   let total = $state<number>(1);
-  let capacity = $state<number>(1);
+  let capacity = $state<number>(25);
+  let searchText = $state<string>("");
 
   $effect(() => {
-    repository.getAll(page, capacity).then((paginated) => {
+    repository.search(searchText, page, capacity).then((paginated) => {
       clients = paginated.results;
       total = paginated.total;
     });
@@ -36,6 +36,17 @@
       </button>
     </div>
   </div>
+
+  <label class="input mt-2 ms-auto input-sm">
+    <i class="fa-solid fa-magnifying-glass opacity-50"></i>
+    <input
+      type="search"
+      required
+      placeholder="Recherche"
+      bind:value={searchText}
+    />
+  </label>
+
   <div
     class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-2"
   >

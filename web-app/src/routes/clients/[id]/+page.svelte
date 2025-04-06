@@ -3,6 +3,10 @@
     import { page } from "$app/state";
     import { t } from "$lib/translations/index";
     import { repository, Client } from "$lib/models/clients";
+    import {
+        repository as repositoryEstimate,
+        Estimate,
+    } from "$lib/models/estimates";
     import confirmation from "$lib/stores/confirm.svelte";
     import { goto } from "$app/navigation";
     import alerts from "$lib/stores/alerts.svelte";
@@ -10,8 +14,11 @@
 
     let editModal: Edit;
     let client: Client | undefined;
+    let estimates: Estimate[] = [];
+
     onMount(async () => {
         client = await repository.getById(page.params.id);
+        estimates = await repositoryEstimate.getByClient(client?.$id!);
     });
 
     function remove() {
@@ -85,23 +92,37 @@
                         <i class="fa-solid fa-file-invoice"></i>
                         {$t("navigation.estimates")}
                     </h2>
-                    <a class="ms-auto btn btn-circle" href="/estimates/new?clientId={client?.$id}" aria-label="Add estimate"> 
+                    <a
+                        class="ms-auto btn btn-circle"
+                        href="/estimates/new?clientId={client?.$id}"
+                        aria-label="Add estimate"
+                    >
                         <i class="fa-solid fa-plus"></i>
                     </a>
                 </div>
 
-                <ul class="list bg-base-100 rounded-box shadow-md">
-                    <li class="list-row">
-                        <div>
-                            <div>Dio Lupa</div>
-                            <div
-                                class="text-xs uppercase font-semibold opacity-60"
-                            >
-                                Remaining Reason
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+                {#if estimates.length === 0}
+                    <div class="flex h-20">
+                        <span class="text-sm m-auto opacity-60"
+                            >Aucun devis trouvé</span
+                        >
+                    </div>
+                {:else}
+                    <ul class="list bg-base-100 rounded-box shadow-md">
+                        {#each estimates as estimate}
+                            <li class="list-row p-2">
+                                <a href="/estimates/{estimate.$id}">
+                                    <span class="font-semibold">
+                                        {estimate.reference}
+                                    </span>
+                                    <span class=" text-xs">
+                                        {estimate.name}
+                                    </span>
+                                </a>
+                            </li>
+                        {/each}
+                    </ul>
+                {/if}
             </div>
         </div>
         <div class="col-span-2 md:col-span-1 card bg-base-200 shadow-md">

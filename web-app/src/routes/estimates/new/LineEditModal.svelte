@@ -17,10 +17,10 @@
     });
     let isEdit = $state(false);
 
-    let totalWithoutTax = $derived(line.unitPrice * line.quantity);
+    let totalWithoutTax = $derived(line.unitPrice * line.quantity * (1 - line.discount / 100));
     let totalTax = $derived((totalWithoutTax * line.tax) / 100);
     let total = $derived(
-        totalWithoutTax + totalTax * (1 - line.discount / 100),
+        totalWithoutTax + totalTax,
     );
 
     export function show(

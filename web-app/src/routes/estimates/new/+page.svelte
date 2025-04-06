@@ -13,13 +13,13 @@
     import SelectClientModal from "../../clients/SelectModal.svelte";
     import { createRandomRef, round } from "$lib/base/utils";
     import alerts from "$lib/stores/alerts.svelte";
+    import { goto } from "$app/navigation";
 
     let client = $state<Client | null>(null);
     let lines = $state<EstimateLine[]>([]);
     let estimateInfos = $state({
         name: "Devis",
         reference: createRandomRef(),
-        discountOnTotal: 0,
         issueDate: new Date().toISOString().split("T")[0],
         validityDate: null,
     });
@@ -31,16 +31,23 @@
     let selectClientModal: SelectClientModal;
 
     let totalHT = $derived(
-        lines.reduce((acc, line) => acc + line.totalWithoutTax, 0),
+        lines.reduce((acc, line) => acc + line.totalWithoutTax, 0)
     );
     let totalTVA = $derived(
-        lines.reduce((acc, line) => acc + line.totalTax, 0),
+        lines.reduce((acc, line) => acc + line.totalTax, 0)
     );
     let totalTTC = $derived(lines.reduce((acc, line) => acc + line.total, 0));
 
     onMount(async () => {
         let clientId = page.url.searchParams.get("clientId");
-        if (clientId) {
+        let basedOn = page.url.searchParams.get("basedOn");
+        if (basedOn) {
+            let estimate = await repository.getById(basedOn);
+            lines = estimate.lines;
+            estimateInfos.name = estimate.name + " - Copie";
+            client = await repositoryClient.getById(estimate.clientId!);
+        }
+        else if (clientId) {
             client = await repositoryClient.getById(clientId);
         }
     });
@@ -82,16 +89,15 @@
     async function save() {
         let estimate = new Estimate();
         estimate.name = estimateInfos.name;
-        estimate.client = client;
+        estimate.clientId = client?.$id;
         estimate.lines = lines;
         estimate.reference = estimateInfos.reference;
         estimate.issueDate = estimateInfos.issueDate
             ? new Date(Date.parse(estimateInfos.issueDate))
-            : null;
+            : undefined;
         estimate.validityDate = estimateInfos.validityDate
             ? new Date(Date.parse(estimateInfos.validityDate))
-            : null;
-        estimate.discount = estimateInfos.discountOnTotal;
+            : undefined;
 
         if (hasErrors(estimate)) {
             alerts.error(Object.values(errors).filter(Boolean).join(", "));
@@ -100,6 +106,8 @@
 
         try {
             await repository.create(estimate);
+            goto(`/estimates/${estimate.$id}`);
+            alerts.success($t("estimates.create.success"));
         } catch (e) {
             console.error(e);
             alerts.error($t("estimates.create.error"));
@@ -165,7 +173,7 @@
             </tbody>
         </table>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-6 mt-2 gap-2">
+    <div class="grid grid-cols-1 lg:grid-cols-6 mt-2 gap-2">
         <div
             class="col-span-2 card bg-base-200 shadow-md min-h-40"
             class:border-error={errors.client}
@@ -267,14 +275,6 @@
         >
             <div class="card-body py-2">
                 <h2 class="card-title">Total</h2>
-
-                <label class="input w-full">
-                    Réduction (%)
-                    <input
-                        type="number"
-                        bind:value={estimateInfos.discountOnTotal}
-                    />
-                </label>
                 <div>
                     <div class="flex">
                         <span class="font-thin opacity-50">HT</span>
@@ -294,24 +294,11 @@
                             >{round(totalTTC)} €</span
                         >
                     </div>
-                    <div class="flex">
-                        <span class="font-thin opacity-50">Total</span>
-                        <span class="ms-auto text-right"
-                            >{round(
-                                totalTTC *
-                                    (1 - estimateInfos.discountOnTotal / 100),
-                            )}
-                            €</span
-                        >
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Récupération du client -->
-<!-- Info de -->
 
 <ul
     bind:this={popover}

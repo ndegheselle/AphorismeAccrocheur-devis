@@ -30,7 +30,7 @@ export function hasErrors(estimate: Estimate): boolean {
     }
 
     // Validate client
-    if (!estimate.client) {
+    if (!estimate.clientId) {
         errors.client = 'Le client est obligatoire';
     }
 

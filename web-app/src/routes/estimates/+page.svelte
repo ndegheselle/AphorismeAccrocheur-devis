@@ -1,5 +1,30 @@
 <script lang="ts">
     import { t } from "$lib/translations/index";
+    import { repository, Estimate } from "$lib/models/estimates";
+    import Pagination from "$lib/components/navigation/Pagination.svelte";
+    import { formatDate } from "$lib/base/utils";
+
+    let page = $state<number>(1);
+    let total = $state<number>(1);
+    let capacity = $state<number>(25);
+    let searchText = $state<string>("");
+
+    let estimates = $state<Estimate[]>([]);
+
+    $effect(() => {
+        repository.getAll(page, capacity).then((paginated) => {
+            estimates = paginated.results;
+            total = paginated.total;
+        });
+    });
+
+    $effect(() => {
+        repository.search(searchText, page, capacity).then((paginated) => {
+            estimates = paginated.results;
+            total = paginated.total;
+        });
+    });
+
 </script>
 
 <div class="container mx-auto py-4">
@@ -14,14 +39,38 @@
             </a>
         </div>
     </div>
-</div>
+    <label class="input mt-2 ms-auto input-sm">
+        <i class="fa-solid fa-magnifying-glass opacity-50"></i>
+        <input type="search" required placeholder="Recherche" bind:value={searchText} />
+      </label>
+    
 
-<dialog id="my_modal_2" class="modal">
-    <div class="modal-box">
-        <h3 class="text-lg font-bold">Hello!</h3>
-        <p class="py-4">Press ESC key or click outside to close</p>
+    <div
+        class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-2"
+    >
+        <table class="table">
+            <!-- head -->
+            <thead>
+                <tr>
+                    <th>Référence</th>
+                    <th>Nom</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {#each estimates as estimate}
+                    <tr>
+                        <th>
+                            <a href="/estimates/{estimate.$id}"
+                                >{estimate.reference}</a
+                            ></th
+                        >
+                        <td>{estimate.name}</td>
+                        <td>{formatDate(estimate.issueDate)}</td>
+                    </tr>
+                {/each}
+            </tbody>
+        </table>
     </div>
-    <form method="dialog" class="modal-backdrop">
-        <button>close</button>
-    </form>
-</dialog>
+    <Pagination bind:total bind:page bind:capacity />
+</div>
