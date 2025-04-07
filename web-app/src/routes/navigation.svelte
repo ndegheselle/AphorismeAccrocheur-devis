@@ -26,13 +26,24 @@
             <ul
                 class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
-            <li>
-                <a href="/clients"
-                    ><i class="fa-solid fa-address-book"></i>
-                    {$t("navigation.clients")}</a
-                >
-            </li>
-            <li><a href="/estimates"><i class="fa-solid fa-file"></i> {$t("navigation.estimates")}</a></li>
+                <li>
+                    <a href="/business"
+                        ><i class="fa-solid fa-building"></i>
+                        {$t("navigation.business")}</a
+                    >
+                </li>
+                <li>
+                    <a href="/clients"
+                        ><i class="fa-solid fa-address-book"></i>
+                        {$t("navigation.clients")}</a
+                    >
+                </li>
+                <li>
+                    <a href="/estimates"
+                        ><i class="fa-solid fa-file"></i>
+                        {$t("navigation.estimates")}</a
+                    >
+                </li>
             </ul>
         </div>
         <a href="/" class="btn btn-ghost text-xl">Élancé</a>
@@ -54,12 +65,23 @@
             <li><a href="/invoices"><i class="fa-solid fa-file-invoice"></i> {$t("navigation.invoices")}</a></li>
             -->
             <li>
+                <a href="/business"
+                    ><i class="fa-solid fa-building"></i>
+                    {$t("navigation.business")}</a
+                >
+            </li>
+            <li>
                 <a href="/clients"
                     ><i class="fa-solid fa-address-book"></i>
                     {$t("navigation.clients")}</a
                 >
             </li>
-            <li><a href="/estimates"><i class="fa-solid fa-file"></i> {$t("navigation.estimates")}</a></li>
+            <li>
+                <a href="/estimates"
+                    ><i class="fa-solid fa-file"></i>
+                    {$t("navigation.estimates")}</a
+                >
+            </li>
         </ul>
     </div>
     <div class="navbar-end">
