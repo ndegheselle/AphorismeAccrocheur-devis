@@ -174,6 +174,35 @@
         </table>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-6 mt-2 gap-2">
+
+        <div
+            class="card bg-base-200 shadow-md col-span-2 lg:col-span-1 lg:col-start-6 order-first lg:order-last"
+        >
+            <div class="card-body py-2">
+                <h2 class="card-title">Total</h2>
+                <div>
+                    <div class="flex">
+                        <span class="font-thin opacity-50">HT</span>
+                        <span class="ms-auto text-right"
+                            >{round(totalHT)} €</span
+                        >
+                    </div>
+                    <div class="flex">
+                        <span class="font-thin opacity-50">TVA</span>
+                        <span class="ms-auto text-right"
+                            >{round(totalTVA)} €</span
+                        >
+                    </div>
+                    <div class="flex">
+                        <span class="font-thin opacity-50">TTC</span>
+                        <span class="ms-auto text-right"
+                            >{round(totalTTC)} €</span
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div
             class="col-span-2 card bg-base-200 shadow-md min-h-40"
             class:border-error={errors.client}
@@ -270,33 +299,6 @@
             </div>
         </div>
 
-        <div
-            class="card bg-base-200 shadow-md col-span-2 lg:col-span-1 lg:col-start-6 lg:col-end-7"
-        >
-            <div class="card-body py-2">
-                <h2 class="card-title">Total</h2>
-                <div>
-                    <div class="flex">
-                        <span class="font-thin opacity-50">HT</span>
-                        <span class="ms-auto text-right"
-                            >{round(totalHT)} €</span
-                        >
-                    </div>
-                    <div class="flex">
-                        <span class="font-thin opacity-50">TVA</span>
-                        <span class="ms-auto text-right"
-                            >{round(totalTVA)} €</span
-                        >
-                    </div>
-                    <div class="flex">
-                        <span class="font-thin opacity-50">TTC</span>
-                        <span class="ms-auto text-right"
-                            >{round(totalTTC)} €</span
-                        >
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 

@@ -5,7 +5,6 @@
     import { t } from "$lib/translations/index";
     import { createDeferred, Deferred } from "$lib/base/deferred";
 
-    let fieldset: HTMLFieldSetElement;
     let client = $state<Client>(new Client());
     let deferred: Deferred<Client | null>;
     let modal: HTMLDialogElement;
@@ -15,7 +14,7 @@
         
         try {
             // Create client
-            if (clientExist()) client = await repository.update(client);
+            if (client.exists) client = await repository.update(client);
             else client = await repository.create(client);
             close(true);
         } catch {
@@ -34,19 +33,14 @@
         deferred.resolve(success ? client : null);
     }
 
-    function clientExist() {
-        return !!client.$id;
-    }
-
 </script>
 
 <dialog bind:this={modal} class="modal">
     <fieldset
         class="fieldset w-md modal-box bg-base-200 border border-base-300 p-4 rounded-box"
-        bind:this={fieldset}
     >
         <legend class="fieldset-legend"
-            >{clientExist() ? $t("clients.edit") : $t("clients.new")}</legend
+            >{client.exists ? $t("clients.edit") : $t("clients.new")}</legend
         >
         <div class="grid grid-cols-3 gap-2">
             <div>
@@ -144,7 +138,7 @@
                 >{$t("common.cancel")}</button
             >
             <button class="btn btn-primary" onclick={() => save()}
-                >{clientExist()
+                >{client.exists
                     ? $t("common.update")
                     : $t("common.create")}</button
             >

@@ -21,6 +21,10 @@ export class Client {
     get fullAddress() : string {
         return `${this.adress}, ${this.city}, ${this.zipCode}`;
     }
+
+    get exists() : boolean {
+        return this.$id != null;
+    }
 }
 
 async function create(client: Client) : Promise<Client>{

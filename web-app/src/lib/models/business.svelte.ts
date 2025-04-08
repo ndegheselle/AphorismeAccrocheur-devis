@@ -7,6 +7,7 @@ export let errors = $state<any>({
     zipCode: "",
     email: "",
     phone: "",
+    logo: "",
 });
 
 export function hasErrors(business: Business): boolean {
@@ -14,6 +15,11 @@ export function hasErrors(business: Business): boolean {
     Object.keys(errors).forEach(key => {
         errors[key] = "";
     });
+
+    // Validate business name
+    if (!business.businessName || business.businessName.trim() === '') {
+        errors.businessName = 'Le nom de l\'entreprise est obligatoire';
+    }
 
     if (!business.adress || business.adress.trim() === '') {
         errors.adress = 'L\'adresse est obligatoire';

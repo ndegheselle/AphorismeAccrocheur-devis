@@ -41,6 +41,6 @@ class Authentification {
 }
 
 const auth = new Authentification();
-auth.getCurrentUser();
+await auth.getCurrentUser();
 
 export default auth;

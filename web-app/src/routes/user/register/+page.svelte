@@ -21,7 +21,7 @@
                 authForm.password,
                 authForm.name,
             );
-            goto("/");
+            goto('/user/business');
         } catch (error: any) {
             error = error.message;
         }
