@@ -4,47 +4,43 @@ import type { Models } from 'appwrite';
 import { goto } from "$app/navigation";
 
 type User = Models.User<Models.Preferences>;
-let currentUser = $state<User | null>(null);
-let isConnected = $derived<boolean>(currentUser != null);
+class Authentification {
+    currentUser = $state<User | null>(null);
+    isConnected = $derived<boolean>(this.currentUser != null);
 
-await getCurrentUser();
+    async getCurrentUser() {
+        try {
+            this.currentUser = await account.get();
+        } catch (error) {
+            this.currentUser = null;
+        }
+    }
 
-async function getCurrentUser() {
-    try {
-        currentUser = await account.get();
-    } catch (error) {
-        currentUser = null;
+    async login(email: string, password: string) {
+        try {
+            await account.createEmailPasswordSession(email, password);
+            this.currentUser = await account.get();
+        }
+        catch (error) {
+            this.currentUser = null;
+            return false;
+        }
+        return true;
+    }
+
+    async logout() {
+        await account.deleteSession('current');
+        this.currentUser = null;
+        goto("/user/login");
+    }
+
+    async register(email: string, password: string, name: string) {
+        await account.create(ID.unique(), email, password, name);
+        return await this.login(email, password);
     }
 }
 
-async function login(email: string, password: string) {
-    try {
-        await account.createEmailPasswordSession(email, password);
-        currentUser = await account.get();
-    }
-    catch (error) {
-        currentUser = null;
-        return false;
-    }
-    return true;
-}
+const auth = new Authentification();
+auth.getCurrentUser();
 
-async function logout() {
-    await account.deleteSession('current');
-    currentUser = null;
-    goto("/user/login");
-}
-
-async function register(email: string, password: string, name: string)
-{
-    await account.create(ID.unique(), email, password, name);
-    return await login(email, password);
-}
-
-export default {
-    currentUser,
-    isConnected,
-    login,
-    logout,
-    register
-};
+export default auth;

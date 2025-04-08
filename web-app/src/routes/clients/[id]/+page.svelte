@@ -60,17 +60,18 @@
                             <i class="fa-solid fa-ellipsis"></i>
                         </summary>
                         <ul
-                            class="menu dropdown-content bg-base-100 rounded-box shadow-md"
-                        >
+                            class="menu dropdown-content bg-base-100 rounded-box shadow-md">
                             <li>
-                                <button onclick={edit}
-                                    ><i class="fa-solid fa-pen"></i> Modifier</button
-                                >
+                                <button onclick={edit}>
+                                    <i class="fa-solid fa-pen"></i>
+                                     Modifier
+                                </button>
                             </li>
                             <li>
-                                <button class="text-error" onclick={remove}
-                                    ><i class="fa-solid fa-trash"></i> Supprimer</button
-                                >
+                                <button class="text-error" onclick={remove}>
+                                    <i class="fa-solid fa-trash"></i>
+                                     Supprimer
+                                </button>
                             </li>
                         </ul>
                     </details>
@@ -95,17 +96,16 @@
                     <a
                         class="ms-auto btn btn-circle"
                         href="/estimates/new?clientId={client?.$id}"
-                        aria-label="Add estimate"
-                    >
+                        aria-label="Add estimate">
                         <i class="fa-solid fa-plus"></i>
                     </a>
                 </div>
 
                 {#if estimates.length === 0}
                     <div class="flex h-20">
-                        <span class="text-sm m-auto opacity-60"
-                            >Aucun devis trouvé</span
-                        >
+                        <span class="text-sm m-auto opacity-60">
+                            Aucun devis trouvé
+                        </span>
                     </div>
                 {:else}
                     <ul class="list bg-base-100 rounded-box shadow-md">

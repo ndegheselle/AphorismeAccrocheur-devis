@@ -1,6 +1,5 @@
 <script lang="ts">
     import auth from "$lib/stores/auth.svelte";
-    import alerts from "$lib/stores/alerts.svelte";
     import { t } from "$lib/translations/index";
 </script>
 
@@ -26,12 +25,6 @@
             <ul
                 class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
-                <li>
-                    <a href="/business"
-                        ><i class="fa-solid fa-building"></i>
-                        {$t("navigation.business")}</a
-                    >
-                </li>
                 <li>
                     <a href="/clients"
                         ><i class="fa-solid fa-address-book"></i>
@@ -64,12 +57,6 @@
             <li><a href="/estimates"><i class="fa-solid fa-file"></i> {$t("navigation.estimates")}</a></li>
             <li><a href="/invoices"><i class="fa-solid fa-file-invoice"></i> {$t("navigation.invoices")}</a></li>
             -->
-            <li>
-                <a href="/business"
-                    ><i class="fa-solid fa-building"></i>
-                    {$t("navigation.business")}</a
-                >
-            </li>
             <li>
                 <a href="/clients"
                     ><i class="fa-solid fa-address-book"></i>
@@ -109,13 +96,19 @@
                         class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
                     >
                         <li>
+                            <a href="/user/business"
+                                ><i class="fa-solid fa-building"></i>
+                                {$t("navigation.business")}</a
+                            >
+                        </li>
+                        <li>
                             <a href="/user"
                                 ><i class="fa-solid fa-gear"></i>
                                 {$t("common.parameters")}
                             </a>
                         </li>
                         <li>
-                            <button onclick={auth.logout}>
+                            <button onclick={() => auth.logout()}>
                                 <i class="fa-solid fa-right-from-bracket"></i>
                                 {$t("user.logout")}
                             </button>
