@@ -6,9 +6,12 @@
     import alerts from "$lib/stores/alerts.svelte";
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
+    import { createDeferred, Deferred } from "$lib/base/deferred";
 
     let business = $state<Business>(new Business());
     let files = $state<FileList | null>(null);
+    let deferred: Deferred<Business | null>;
+    let modal: HTMLDialogElement;
 
     onMount(async () => {
         // Check if we are editing an existing business
@@ -35,9 +38,21 @@
             alerts.error($t("business.edit.error"));
         }
     }
+
+    export function show(_business: Business): Promise<Business | null> {
+        business = _business;
+        deferred = createDeferred<Business | null>();
+        modal.show();
+        return deferred.promise;
+    }
+
+    export function close(success: boolean = false) {
+        modal.close();
+        deferred.resolve(success ? business : null);
+    }
 </script>
 
-<div class="container mx-auto">
+<dialog bind:this={modal} class="modal">
     <fieldset
         class="fieldset w-md bg-base-200 border border-base-300 p-4 rounded-box mx-auto mb-2">
         <legend class="fieldset-legend">{$t("business.title")}</legend>
@@ -45,8 +60,7 @@
         <div class="flex gap-2">
             <div class="avatar">
                 <div class="w-24 rounded">
-                    <img
-                        src={business.logoUrl} alt="Logo"/>
+                    <img src={business.logoUrl} alt="Logo" />
                 </div>
             </div>
             <div class="w-full">
@@ -64,16 +78,16 @@
         </div>
 
         <!-- Name -->
-        <label class="fieldset-label" for="businessName">
+        <label class="fieldset-label" for="name">
             {$t("business.name")} *
         </label>
         <input
             type="text"
             class="input w-full"
-            class:input-error={errors.businessName}
-            name="businessName"
-            bind:value={business.businessName} />
-        <p class="fieldset-label text-error">{errors.businessName}</p>
+            class:input-error={errors.name}
+            name="name"
+            bind:value={business.name} />
+        <p class="fieldset-label text-error">{errors.name}</p>
 
         <!-- Adress -->
         <label class="fieldset-label" for="adress">
@@ -134,6 +148,16 @@
             bind:value={business.phone} />
         <p class="fieldset-label text-error">{errors.phone}</p>
 
-        <button class="btn btn-primary mt-4" onclick={save}>Sauvegarder</button>
+        <div class="modal-action">
+            <button class="btn" onclick={() => close()}>
+                {$t("common.cancel")}
+            </button>
+            <button class="btn btn-primary" onclick={() => save()}>
+                {business.exists ? $t("common.update") : $t("common.create")}
+            </button>
+        </div>
     </fieldset>
-</div>
+    <div class="modal-backdrop">
+        <button onclick={() => close()}>Close</button>
+    </div>
+</dialog>

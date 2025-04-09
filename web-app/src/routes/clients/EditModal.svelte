@@ -23,6 +23,7 @@
     }
 
     export function show(_client: Client): Promise<Client | null>  {
+        client = _client;
         deferred = createDeferred<Client | null>();
         modal.show();
         return deferred.promise;

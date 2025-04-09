@@ -96,12 +96,6 @@
                         class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
                     >
                         <li>
-                            <a href="/user/business"
-                                ><i class="fa-solid fa-building"></i>
-                                {$t("navigation.business")}</a
-                            >
-                        </li>
-                        <li>
                             <a href="/user"
                                 ><i class="fa-solid fa-gear"></i>
                                 {$t("common.parameters")}

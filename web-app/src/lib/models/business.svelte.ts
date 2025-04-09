@@ -1,7 +1,7 @@
 import { Business } from "./business";
 
 export let errors = $state<any>({
-    lastName: "",
+    name: "",
     adress: "",
     city: "",
     zipCode: "",
@@ -17,7 +17,7 @@ export function hasErrors(business: Business): boolean {
     });
 
     // Validate business name
-    if (!business.businessName || business.businessName.trim() === '') {
+    if (!business.name || business.name.trim() === '') {
         errors.businessName = 'Le nom de l\'entreprise est obligatoire';
     }
 

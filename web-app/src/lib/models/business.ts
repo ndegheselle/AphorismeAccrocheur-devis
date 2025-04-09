@@ -5,8 +5,7 @@ import { copyFrom } from '$lib/base/class';
 
 export class Business {
     $id?: string;
-    businessName: string;
-    lastName: string;
+    name: string;
     adress: string;
     city: string;
     zipCode: string;

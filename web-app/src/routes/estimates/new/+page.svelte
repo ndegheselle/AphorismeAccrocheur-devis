@@ -14,6 +14,7 @@
     import { createRandomRef, round } from "$lib/base/utils";
     import alerts from "$lib/stores/alerts.svelte";
     import { goto } from "$app/navigation";
+    import ClientSummary from "$routes/clients/Summary.svelte";
 
     let client = $state<Client | null>(null);
     let lines = $state<EstimateLine[]>([]);
@@ -31,10 +32,10 @@
     let selectClientModal: SelectClientModal;
 
     let totalHT = $derived(
-        lines.reduce((acc, line) => acc + line.totalWithoutTax, 0)
+        lines.reduce((acc, line) => acc + line.totalWithoutTax, 0),
     );
     let totalTVA = $derived(
-        lines.reduce((acc, line) => acc + line.totalTax, 0)
+        lines.reduce((acc, line) => acc + line.totalTax, 0),
     );
     let totalTTC = $derived(lines.reduce((acc, line) => acc + line.total, 0));
 
@@ -46,8 +47,7 @@
             lines = estimate.lines;
             estimateInfos.name = estimate.name + " - Copie";
             client = await repositoryClient.getById(estimate.clientId!);
-        }
-        else if (clientId) {
+        } else if (clientId) {
             client = await repositoryClient.getById(clientId);
         }
     });
@@ -120,22 +120,20 @@
         <input
             type="text"
             class="input input-ghost text-2xl my-auto font-thin w-full"
-            bind:value={estimateInfos.name}
-        />
+            bind:value={estimateInfos.name} />
         <button class="ms-2 btn btn-primary" onclick={save}>
-            <i class="fa-solid fa-save"></i> Sauvegarder
+            <i class="fa-solid fa-save"></i>
+            Sauvegarder
         </button>
         <button
             class="ms-2 btn btn-circle"
             aria-label="Ajouter une ligne"
-            onclick={add}
-        >
+            onclick={add}>
             <i class="fa-solid fa-plus"></i>
         </button>
     </div>
     <div
-        class="flex-grow overflow-y-auto mt-2 overflow-x-auto rounded-box border border-base-content/5 bg-base-200"
-    >
+        class="flex-grow overflow-y-auto mt-2 overflow-x-auto rounded-box border border-base-content/5 bg-base-200">
         <table class="table table-xs table-pin-rows table-pin-cols">
             <thead>
                 <tr>
@@ -163,8 +161,7 @@
                                 style="anchor-name:--anchor-1"
                                 onclick={() => {
                                     selectedLine = line;
-                                }}
-                            >
+                                }}>
                                 <i class="fa-solid fa-ellipsis"></i>
                             </button>
                         </td>
@@ -174,66 +171,54 @@
         </table>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-6 mt-2 gap-2">
-
         <div
-            class="card bg-base-200 shadow-md col-span-2 lg:col-span-1 lg:col-start-6 order-first lg:order-last"
-        >
-            <div class="card-body py-2">
+            class="card bg-base-200 shadow-md col-span-2 lg:col-span-1 lg:col-start-6 order-first lg:order-last">
+            <div class="card-body">
                 <h2 class="card-title">Total</h2>
                 <div>
                     <div class="flex">
                         <span class="font-thin opacity-50">HT</span>
-                        <span class="ms-auto text-right"
-                            >{round(totalHT)} €</span
-                        >
+                        <span class="ms-auto text-right">
+                            {round(totalHT)} €
+                        </span>
                     </div>
                     <div class="flex">
                         <span class="font-thin opacity-50">TVA</span>
-                        <span class="ms-auto text-right"
-                            >{round(totalTVA)} €</span
-                        >
+                        <span class="ms-auto text-right">
+                            {round(totalTVA)} €
+                        </span>
                     </div>
                     <div class="flex">
                         <span class="font-thin opacity-50">TTC</span>
-                        <span class="ms-auto text-right"
-                            >{round(totalTTC)} €</span
-                        >
+                        <span class="ms-auto text-right">
+                            {round(totalTTC)} €
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
 
         <div
-            class="col-span-2 card bg-base-200 shadow-md min-h-40"
-            class:border-error={errors.client}
-        >
-            {#if client}
-                <div class="card-body py-2">
-                    <div class="flex">
-                        <h2 class="card-title">
-                            <i class="fa-solid fa-user"></i>
-                            {client?.firstName}
-                            {client?.lastName}
-                        </h2>
-                        <button
-                            class="btn btn-circle ms-auto"
-                            aria-label="Modifier client"
-                            onclick={() => (client = null)}
-                        >
-                            <i class="fa-solid fa-close"></i>
-                        </button>
-                    </div>
-
-                    <p>{client?.adress}, {client?.city} {client?.zipCode}</p>
-                    {#if client?.email}
-                        <a href="mailto:{client?.email}">{client?.email}</a>
-                    {/if}
-                    {#if client?.phone}
-                        <a href="tel:{client?.phone}">{client?.phone}</a>
+            class="col-span-2 min-h-40 card card-dash bg-base-200 shadow-md"
+            class:border-error={errors.client}>
+            <div class="card-body">
+                <div class="flex">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-user"></i>
+                         Client
+                    </h2>
+                    {#if client}
+                    <button
+                        class="ms-auto btn btn-sm btn-circle ms-auto"
+                        aria-label="Modifier client"
+                        onclick={() => (client = null)}>
+                        <i class="fa-solid fa-close"></i>
+                    </button>
                     {/if}
                 </div>
-            {:else}
-                <div class="card-body py-2">
+                {#if client}
+                    <ClientSummary {client} />
+                {:else}
                     <div class=" m-auto flex flex-col">
                         <button class="btn" onclick={selectClient}>
                             <i class="fa-solid fa-user"></i>
@@ -245,52 +230,47 @@
                             Créer un client
                         </button>
                     </div>
-                </div>
-            {/if}
+                {/if}
+            </div>
         </div>
         <div class="col-span-2 card bg-base-200 shadow-md">
-            <div class="card-body py-2">
+            <div class="card-body">
                 <h2 class="card-title">Infos</h2>
                 <fieldset class="fieldset p-0">
                     <label
                         class="input w-full tooltip tooltip-left"
                         data-tip="Référence"
-                        class:input-error={errors.reference}
-                    >
+                        class:input-error={errors.reference}>
                         <i class="fa-solid fa-hashtag opacity-50"></i>
                         <input
                             type="text"
                             class="grow"
                             placeholder="Référence"
-                            bind:value={estimateInfos.reference}
-                        />
+                            bind:value={estimateInfos.reference} />
                     </label>
                     <p class="fieldset-label text-error">{errors.reference}</p>
                     <label
                         class="input w-full tooltip tooltip-left"
                         data-tip="Date"
-                        class:input-error={errors.issueDate}
-                        ><i class="fa-solid fa-calendar-day opacity-50"></i>
+                        class:input-error={errors.issueDate}>
+                        <i class="fa-solid fa-calendar-day opacity-50"></i>
                         <input
                             type="date"
                             class="grow"
                             placeholder="Date"
-                            bind:value={estimateInfos.issueDate}
-                        />
+                            bind:value={estimateInfos.issueDate} />
                     </label>
                     <p class="fieldset-label text-error">{errors.issueDate}</p>
                     <label
                         class="input w-full tooltip tooltip-left"
                         data-tip="Date d'échéance"
-                        class:input-error={errors.validityDate}
-                    >
+                        class:input-error={errors.validityDate}>
                         <i class="fa-solid fa-calendar-xmark opacity-50"></i>
                         <input
                             type="date"
                             class="grow"
                             placeholder="Date d'échéance"
-                            bind:value={estimateInfos.validityDate}
-                        />
+                            bind:value={estimateInfos.validityDate} />
                     </label>
                     <p class="fieldset-label text-error">
                         {errors.validityDate}
@@ -298,7 +278,6 @@
                 </fieldset>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -307,17 +286,18 @@
     class="dropdown menu w-52 rounded-box bg-base-100 shadow-sm"
     popover
     id="line-edit"
-    style="position-anchor:--anchor-1"
->
+    style="position-anchor:--anchor-1">
     <li>
-        <button onclick={editSelected}
-            ><i class="fa-solid fa-pen"></i> Modifier</button
-        >
+        <button onclick={editSelected}>
+            <i class="fa-solid fa-pen"></i>
+            Modifier
+        </button>
     </li>
     <li>
-        <button class="text-error" onclick={removeSelected}
-            ><i class="fa-solid fa-trash"></i> Supprimer</button
-        >
+        <button class="text-error" onclick={removeSelected}>
+            <i class="fa-solid fa-trash"></i>
+            Supprimer
+        </button>
     </li>
 </ul>
 
