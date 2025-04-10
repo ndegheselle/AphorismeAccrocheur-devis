@@ -31,6 +31,22 @@
 
     function print() {}
 
+    function invoice() {
+        confirmation
+            .show(
+                "Facturer le devis",
+                "Êtes-vous sûr de vouloir transformer ce devis en facture ?",
+                "fa-file-invoice-dollar",
+            )
+            .then(async (result) => {
+                if (!result) return;
+                if (estimate?.$id == null) return;
+                await repository.remove(estimate.$id);
+                goto("/estimates");
+                alerts.success("Devis supprimé avec succès !");
+            });
+    }
+
     function remove() {
         confirmation
             .show(
@@ -54,7 +70,8 @@
                 <h1 class="text-2xl my-auto font-thin">
                     Devis - {estimate?.reference}
                 </h1>
-                <details class="ms-auto dropdown dropdown-end">
+
+                <details class="dropdown dropdown-end ms-auto">
                     <summary class="btn btn-ghost">
                         <i class="fa-solid fa-ellipsis"></i>
                     </summary>
@@ -72,7 +89,12 @@
                                 Imprimer
                             </button>
                         </li>
-
+                        <li>
+                            <button onclick={invoice}>
+                                <i class="fa-solid fa-file-invoice-dollar"></i>
+                                Facturer
+                            </button>
+                        </li>
                         <li>
                             <button class="text-error" onclick={remove}>
                                 <i class="fa-solid fa-trash"></i>

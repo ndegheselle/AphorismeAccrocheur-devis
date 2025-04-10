@@ -4,12 +4,14 @@ class ConfirmContent
 {
     modal: HTMLDialogElement;
     message = $state<string>();
-    title= $state<string>();
+    title = $state<string>();
+    icon = $state<string | null>();
 }
 
 let deferred: Deferred<boolean>;
 let content = new ConfirmContent();
-function show(title: string, message: string) {
+function show(title: string, message: string, icon: string | null = null) {
+    content.icon = icon;
     content.message = message;
     content.title = title;
     content.modal.showModal();

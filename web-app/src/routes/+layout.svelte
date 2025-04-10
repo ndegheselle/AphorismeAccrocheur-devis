@@ -12,4 +12,3 @@
     <Footer />
     <Confirm />
 </div>
-

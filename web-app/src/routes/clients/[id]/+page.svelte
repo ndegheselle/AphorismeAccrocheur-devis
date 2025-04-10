@@ -11,6 +11,7 @@
     import { goto } from "$app/navigation";
     import alerts from "$lib/stores/alerts.svelte";
     import Edit from "../EditModal.svelte";
+    import Summary from "../Summary.svelte";
 
     let editModal: Edit;
     let client: Client | undefined;
@@ -52,8 +53,7 @@
                 <div class="flex">
                     <h2 class="card-title">
                         <i class="fa-solid fa-user"></i>
-                        {client?.firstName}
-                        {client?.lastName}
+                        Client
                     </h2>
                     <details class="ms-auto dropdown dropdown-end">
                         <summary class="btn btn-ghost">
@@ -77,13 +77,7 @@
                     </details>
                 </div>
 
-                <p>{client?.adress}, {client?.city} {client?.zipCode}</p>
-                {#if client?.email}
-                    <a href="mailto:{client?.email}">{client?.email}</a>
-                {/if}
-                {#if client?.phone}
-                    <a href="tel:{client?.phone}">{client?.phone}</a>
-                {/if}
+                <Summary {client} />
             </div>
         </div>
         <div class="col-span-2 md:col-span-1 card bg-base-200 shadow-md">
