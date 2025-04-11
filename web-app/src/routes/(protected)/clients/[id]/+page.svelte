@@ -27,6 +27,7 @@
             .show(
                 "Supprimer le client",
                 "Êtes-vous sûr de vouloir supprimer ce client ?",
+                "fa-trash"
             )
             .then(async (result) => {
                 if (!result) return;

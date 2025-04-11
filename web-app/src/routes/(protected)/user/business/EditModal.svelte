@@ -33,7 +33,7 @@
             if (business.exists) business = await repository.update(business);
             else business = await repository.create(business);
 
-            goto("/");
+            goto("/dashboard");
         } catch {
             alerts.error($t("business.edit.error"));
         }

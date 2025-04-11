@@ -16,12 +16,12 @@
         authForm.isLoading = true;
 
         try {
-            await auth.register(
+            const id = await auth.register(
                 authForm.email,
                 authForm.password,
                 authForm.name,
             );
-            goto('/user/business');
+            goto(`user/${id}`);
         } catch (error: any) {
             error = error.message;
         }

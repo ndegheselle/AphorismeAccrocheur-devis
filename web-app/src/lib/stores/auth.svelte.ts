@@ -34,9 +34,11 @@ class Authentification {
         goto("/user/login");
     }
 
-    async register(email: string, password: string, name: string) {
-        await account.create(ID.unique(), email, password, name);
-        return await this.login(email, password);
+    async register(email: string, password: string, name: string) : Promise<string> {
+        const id = ID.unique();
+        await account.create(id, email, password, name);
+        await this.login(email, password);
+        return id;
     }
 }
 

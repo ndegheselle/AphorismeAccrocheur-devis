@@ -5,45 +5,46 @@
 
 <div class="navbar bg-base-300">
     <div class="navbar-start">
-        <div class="dropdown">
-            <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M4 6h16M4 12h8m-8 6h16"
-                    />
-                </svg>
+        {#if auth.isConnected}
+            <div class="dropdown">
+                <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 6h16M4 12h8m-8 6h16" />
+                    </svg>
+                </div>
+                <ul
+                    class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                    <li>
+                        <a href="/clients">
+                            <i class="fa-solid fa-address-book"></i>
+                            {$t("navigation.clients")}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/estimates">
+                            <i class="fa-solid fa-file"></i>
+                            {$t("navigation.estimates")}
+                        </a>
+                    </li>
+                </ul>
             </div>
-            <ul
-                class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-            >
-                <li>
-                    <a href="/clients"
-                        ><i class="fa-solid fa-address-book"></i>
-                        {$t("navigation.clients")}</a
-                    >
-                </li>
-                <li>
-                    <a href="/estimates"
-                        ><i class="fa-solid fa-file"></i>
-                        {$t("navigation.estimates")}</a
-                    >
-                </li>
-            </ul>
-        </div>
-        <a href="/" class="btn btn-ghost text-xl">Élancé</a>
+        {/if}
+        <a href="/dashboard" class="btn btn-ghost text-xl">Élancé</a>
     </div>
-    <div class="navbar-center hidden lg:flex">
-        <ul class="menu menu-horizontal px-1">
-            <!--
+
+    {#if auth.isConnected}
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1">
+                <!--
             <li>
                 <details>
                     <summary><i class="fa-solid fa-user-tie"></i> {$t("navigation.my_company")}</summary>
@@ -57,20 +58,22 @@
             <li><a href="/estimates"><i class="fa-solid fa-file"></i> {$t("navigation.estimates")}</a></li>
             <li><a href="/invoices"><i class="fa-solid fa-file-invoice"></i> {$t("navigation.invoices")}</a></li>
             -->
-            <li>
-                <a href="/clients"
-                    ><i class="fa-solid fa-address-book"></i>
-                    {$t("navigation.clients")}</a
-                >
-            </li>
-            <li>
-                <a href="/estimates"
-                    ><i class="fa-solid fa-file"></i>
-                    {$t("navigation.estimates")}</a
-                >
-            </li>
-        </ul>
-    </div>
+                <li>
+                    <a href="/clients">
+                        <i class="fa-solid fa-address-book"></i>
+                        {$t("navigation.clients")}
+                    </a>
+                </li>
+                <li>
+                    <a href="/estimates">
+                        <i class="fa-solid fa-file"></i>
+                        {$t("navigation.estimates")}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    {/if}
+
     <div class="navbar-end">
         <ul class="menu menu-horizontal px-1">
             {#if !auth.isConnected}
@@ -78,8 +81,8 @@
                     <a
                         href="/user/login"
                         aria-label="Login"
-                        class="btn btn-ghost btn-circle"
-                        ><i class="fa-solid fa-user"></i>
+                        class="btn btn-ghost btn-circle">
+                        <i class="fa-solid fa-user"></i>
                     </a>
                 </li>
             {:else}
@@ -88,16 +91,14 @@
                         <button class="btn btn-ghost btn-circle">
                             <img
                                 alt={$t("user.avatar.alt")}
-                                src="https://avatar.iran.liara.run/public"
-                            />
+                                src="https://avatar.iran.liara.run/public" />
                         </button>
                     </div>
                     <ul
-                        class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
-                    >
+                        class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                         <li>
-                            <a href="/user"
-                                ><i class="fa-solid fa-gear"></i>
+                            <a href="/user">
+                                <i class="fa-solid fa-gear"></i>
                                 {$t("common.parameters")}
                             </a>
                         </li>

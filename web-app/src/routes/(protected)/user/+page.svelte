@@ -1,10 +1,10 @@
 <script lang="ts">
+    import { Business, repository } from "$lib/models/business";
     import auth from "$lib/stores/auth.svelte";
     import { t } from "$lib/translations/index";
-    import { repository, Business } from "$lib/models/business";
     import { onMount } from "svelte";
-    import EditModal from "$routes/user/business/EditModal.svelte";
-    import Summary from "$routes/user/business/Summary.svelte";
+    import EditModal from "./business/EditModal.svelte";
+    import Summary from "./business/Summary.svelte";
 
     let business = $state<Business | null>(null);
     let modal: EditModal;
@@ -14,6 +14,10 @@
         let existingBusiness = await repository.getFirstOrDefault();
         if (existingBusiness) {
             business = existingBusiness;
+        }
+        else
+        {
+            createBusiness();
         }
     });
 

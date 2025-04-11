@@ -11,8 +11,8 @@
     import { goto } from "$app/navigation";
     import confirmation from "$lib/stores/confirm.svelte";
     import alerts from "$lib/stores/alerts.svelte";
-    import ClientSummary from "$routes/clients/Summary.svelte";
-    import BusinessSummary from "$routes/user/business/Summary.svelte";
+    import ClientSummary from "../../clients/Summary.svelte";
+    import BusinessSummary from "../../user/business/Summary.svelte";
     import { repository as businessRepo, Business } from "$lib/models/business";
 
     let estimate = $state<Estimate>();

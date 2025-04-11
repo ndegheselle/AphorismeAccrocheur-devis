@@ -1,20 +1,20 @@
 <script lang="ts">
-    import { t } from "$lib/translations/index";
+    import { goto } from "$app/navigation";
     import { page } from "$app/state";
-    import { onMount } from "svelte";
+    import { createRandomRef, round } from "$lib/base/utils";
     import {
-        repository as repositoryClient,
         Client,
+        repository as repositoryClient,
     } from "$lib/models/clients";
-    import { repository, EstimateLine, Estimate } from "$lib/models/estimates";
-    import { hasErrors, errors } from "$lib/models/estimates.svelte";
-    import LineEditModal from "./LineEditModal.svelte";
+    import { Estimate, EstimateLine, repository } from "$lib/models/estimates";
+    import { errors, hasErrors } from "$lib/models/estimates.svelte";
+    import alerts from "$lib/stores/alerts.svelte";
+    import { t } from "$lib/translations/index";
+    import { onMount } from "svelte";
     import EditClientModal from "../../clients/EditModal.svelte";
     import SelectClientModal from "../../clients/SelectModal.svelte";
-    import { createRandomRef, round } from "$lib/base/utils";
-    import alerts from "$lib/stores/alerts.svelte";
-    import { goto } from "$app/navigation";
-    import ClientSummary from "$routes/clients/Summary.svelte";
+    import ClientSummary from "../../clients/Summary.svelte";
+    import LineEditModal from "./LineEditModal.svelte";
 
     let client = $state<Client | null>(null);
     let lines = $state<EstimateLine[]>([]);

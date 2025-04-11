@@ -1,6 +1,5 @@
 <script>
     import { t } from "$lib/translations/index";
-    import alerts from "$lib/stores/alerts.svelte"
 </script>
 
 <div class="container mx-auto py-4">
