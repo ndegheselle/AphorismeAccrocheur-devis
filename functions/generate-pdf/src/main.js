@@ -1,7 +1,14 @@
-import { createPdf } from './pdf.js';
-import { generateFakeOrder } from './faker.js';
 
-export default async ({ res, log }) => {
+import Generation from './lib/generation.js';
+
+Generation();
+/*
+export default async ({ req, res, log }) => {
+  // Initialize the Databases service
+  const databases = new Databases(client);
+  // Get the user data from the event payload
+  const user = req.bodyJson;
+
   const fakeOrder = generateFakeOrder();
   log(`Generated fake order: ${JSON.stringify(fakeOrder, null, 2)}`);
 
@@ -10,3 +17,4 @@ export default async ({ res, log }) => {
 
   return res.binary(pdfBuffer, 200, { 'Content-Type': 'application/pdf' });
 };
+*/
