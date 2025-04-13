@@ -1,13 +1,14 @@
 import { Client, Databases } from 'node-appwrite';
 
 export const client = new Client();
+
 client
 .setEndpoint(process.env.APPWRITE_ENDPOINT)
 .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
 .setKey(process.env.APPWRITE_API_KEY);
 
 export const databases = new Databases(client);
-
+export const databaseId = "67dda6ca000771a6a0f1";
 export const bucketId = "67f4d5c000293a2abc0f";
 export const collections = {
     clients: "67e15117000204564f9d",
