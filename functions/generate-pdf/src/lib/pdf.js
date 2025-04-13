@@ -1,5 +1,4 @@
 import pdf from 'html-pdf';
-import fs from 'fs';
 
 function generate(htmlContent) {
   const options = {

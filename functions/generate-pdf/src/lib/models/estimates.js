@@ -1,4 +1,4 @@
-import { databases, collections } from "../../appwrite";
+import { databases, collections } from "../../appwrite.js";
 
 async function getById(id)
 {
