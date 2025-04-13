@@ -1,0 +1,21 @@
+{
+    "projectId": "67dd2fe50025a388a4ea",
+    "functions": [
+        {
+            "$id": "67f8fe7100307fb824db",
+            "execute": [],
+            "name": "Generate PDF",
+            "enabled": true,
+            "logging": true,
+            "runtime": "node-22",
+            "scopes": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "entrypoint": "src/main.js",
+            "commands": "npm install",
+            "specification": "s-0.5vcpu-512mb",
+            "path": "functions/Generate PDF"
+        }
+    ]
+}

@@ -1,20 +1,17 @@
+import { client } from './appwrite.js';
+import html from './lib/html.js';
+import pdf from './lib/pdf.js';
+import { repository } from './lib/models/estimates.js';
 
-import Generation from './lib/generation.js';
-
-Generation();
-/*
 export default async ({ req, res, log }) => {
-  // Initialize the Databases service
-  const databases = new Databases(client);
-  // Get the user data from the event payload
-  const user = req.bodyJson;
+  if (req.headers['x-appwrite-user-jwt']) {
+    client.setJWT(req.headers['x-appwrite-user-jwt'])
+  } else {
+    return res.text("Access denied: This function requires authentication. Please sign in to continue.");
+  }
 
-  const fakeOrder = generateFakeOrder();
-  log(`Generated fake order: ${JSON.stringify(fakeOrder, null, 2)}`);
-
-  const pdfBuffer = await createPdf(fakeOrder);
-  log('PDF created.');
-
+  const estimate = repository.getById(params.id);
+  const htmlContent = await html.generate("estimate", estimate);
+  const pdfBuffer = await pdf.generate(htmlContent);
   return res.binary(pdfBuffer, 200, { 'Content-Type': 'application/pdf' });
 };
-*/
