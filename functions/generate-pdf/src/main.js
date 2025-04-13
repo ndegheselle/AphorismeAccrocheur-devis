@@ -9,8 +9,8 @@ export default async ({ req, res, log }) => {
   } else {
     return res.text("Access denied: This function requires authentication. Please sign in to continue.");
   }
-
   const params = req.bodyJson;
+  log(params);
   const estimate = await repository.getById(params.id);
   const htmlContent = await html.generate("estimate", estimate);
   const pdfBuffer = await pdf.generate(htmlContent);
