@@ -3,10 +3,7 @@
     import { page } from "$app/state";
     import { onMount } from "svelte";
     import { repository, Estimate } from "$lib/models/estimates";
-    import {
-        repository as clientRepo,
-        Client,
-    } from "$lib/models/clients";
+    import { repository as clientRepo, Client } from "$lib/models/clients";
     import { round, formatDate } from "$lib/base/utils";
     import { goto } from "$app/navigation";
     import confirmation from "$lib/stores/confirm.svelte";
@@ -14,10 +11,14 @@
     import ClientSummary from "../../clients/Summary.svelte";
     import BusinessSummary from "../../user/business/Summary.svelte";
     import { repository as businessRepo, Business } from "$lib/models/business";
+    import serverless from "$lib/functions";
+    import Error from "$routes/+error.svelte";
+    import { load } from "$routes/+layout";
 
     let estimate = $state<Estimate>();
     let client = $state<Client>();
     let business = $state<Business | null>(null);
+    let loading: HTMLDialogElement;
 
     onMount(async () => {
         estimate = await repository.getById(page.params.id);
@@ -29,7 +30,17 @@
         goto(`/estimates/new?basedOn=${estimate?.$id}`);
     }
 
-    function print() {}
+    async function print() {
+        if (estimate?.$id == null) return;
+
+        loading.show();
+        try {
+            await serverless.generateEstimatePdf(estimate.$id);
+        } catch {
+            alerts.error("Impossible de générer le PDF.");
+        }
+        loading.close();
+    }
 
     function invoice() {
         confirmation
@@ -191,3 +202,12 @@
         </div>
     </div>
 </div>
+
+<dialog bind:this={loading} class="modal">
+    <div class="modal-box flex justify-center">
+            <span class="loading loading-infinity loading-xl"></span>
+            <span class="text-xl ms-4">
+                Génération du pdf en cours ...
+            </span>
+    </div>
+</dialog>
