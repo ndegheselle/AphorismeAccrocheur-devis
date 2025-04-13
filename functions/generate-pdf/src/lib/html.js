@@ -14,9 +14,7 @@ async function generate(templateName, data) {
     const template = Handlebars.compile(templateSource);
 
     // Apply the data to the template
-    const html = template(data);
-
-    return html;
+    return template(data);
 }
 
 export default {

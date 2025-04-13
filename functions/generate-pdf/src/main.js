@@ -11,7 +11,7 @@ export default async ({ req, res, log }) => {
   }
 
   const params = req.bodyJson;
-  const estimate = repository.getById(params.id);
+  const estimate = await repository.getById(params.id);
   const htmlContent = await html.generate("estimate", estimate);
   const pdfBuffer = await pdf.generate(htmlContent);
   return res.binary(pdfBuffer, 200, { 'Content-Type': 'application/pdf' });
