@@ -8,10 +8,10 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "appwrite": "^17.0.1",
     "daisyui": "^5.0.19",
     "handlebars": "^4.7.8",
     "html-pdf": "^3.0.1",
+    "node-appwrite": "^15.0.1",
     "tailwindcss": "^4.1.3"
   },
   "devDependencies": {
