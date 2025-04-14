@@ -1,8 +1,8 @@
-import { databases, databaseId, collections } from "../../appwrite.js";
+import { collections, database } from "../../appwrite.js";
 
 async function getById(id)
 {
-    return await databases.getDocument(databaseId, collections.estimates, id);
+    return await database.db.getDocument(database.id, collections.estimates, id);
 }
 
 export const repository = {
