@@ -1,4 +1,3 @@
-/*
 import { Client, Databases } from 'node-appwrite';
 import { database } from './appwrite.js';
 import html from './lib/html.js';
@@ -24,7 +23,3 @@ export default async ({ req, res, log }) => {
   const pdfBuffer = await pdf.generate(htmlContent);
   return res.binary(pdfBuffer, 200, { 'Content-Type': 'application/pdf' });
 };
-*/
-
-import html from './lib/html.js';
-console.log(await html.generateEstimate({}));
