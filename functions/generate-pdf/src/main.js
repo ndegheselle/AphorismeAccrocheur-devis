@@ -7,9 +7,7 @@ import pdf from './lib/pdf.js';
 export default async ({ req, res, log }) => {
 
   const client = new Client()
-    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(req.headers['x-appwrite-key']);
-
+    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID);
 
   if (req.headers['x-appwrite-user-jwt']) {
     client.setJWT(req.headers['x-appwrite-user-jwt'])
