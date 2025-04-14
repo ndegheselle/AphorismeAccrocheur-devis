@@ -1,22 +1,63 @@
 import Handlebars from 'handlebars';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
-import path from 'path';
 
-// Get the directory name properly in ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const estimateTemplate = /*html*/`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{title}}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .item {
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+    }
+    footer {
+      margin-top: 30px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>{{heading}}</h1>
+    <p>{{description}}</p>
+  </header>
+  
+  <main>
+    <h2>Items List</h2>
+    {{#if items.length}}
+      <ul>
+        {{#each items}}
+          <li class="item">
+            <strong>{{this.name}}</strong> - {{this.price}}
+          </li>
+        {{/each}}
+      </ul>
+    {{else}}
+      <p>No items to display</p>
+    {{/if}}
+  </main>
+  
+  <footer>
+    {{footer}}
+  </footer>
+</body>
+</html>
+`;
 
-// Function to read and compile a template
-async function generate(templateName, data) {
-    const templatePath = path.resolve(__dirname, `../pages/${templateName}.hbs`);
-    const templateSource = await fs.promises.readFile(templatePath, 'utf8');
-    const template = Handlebars.compile(templateSource);
-
+async function generateEstimate(data) {
+    const template = Handlebars.compile(estimateTemplate);
     // Apply the data to the template
     return template(data);
 }
 
 export default {
-    generate
+    generateEstimate
 }
