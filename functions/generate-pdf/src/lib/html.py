@@ -1,9 +1,7 @@
 import pybars
 import os
 
-# Path to the template file
-
-async def generate(template_path, data):
+async def generate(template_name, data):
     """
     Generate HTML estimate from template and data
     
@@ -13,7 +11,7 @@ async def generate(template_path, data):
     Returns:
         str: Rendered HTML content
     """
-    template_path = os.path.join(os.path.dirname(__file__), template_path)
+    template_path = os.path.join(os.path.dirname(__file__), "../../templates/{}.hbs".format(template_name))
     # Create a Handlebars compiler
     compiler = pybars.Compiler()
     
@@ -26,8 +24,3 @@ async def generate(template_path, data):
     
     # Apply the data to the template
     return template(data)
-
-# Module exports
-html = {
-    "generate": generate
-}

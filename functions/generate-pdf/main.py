@@ -1,9 +1,15 @@
 import os
 from appwrite.client import Client
 from appwrite.services.databases import Databases
+import asyncio
+import src.estimates.pdf as estimate
 
-from estimates.pdf import generate
+async def main():
+    await estimate.generate("")
 
+if __name__ == "__main__":
+    asyncio.run(main())
+'''
 async def main(req, res, log):
     client = Client()
     client.set_project(os.environ.get('APPWRITE_FUNCTION_PROJECT_ID'))
@@ -15,11 +21,11 @@ async def main(req, res, log):
     
     # Set database client
     repository.db = Databases(client)
-    
     # Parse request parameters
     params = req.json()
     
-    pdf_buffer = generate(params['id']);
+    pdf_buffer = await estimate.generate(params['id']);
 
     # Return PDF as binary response
     return res.binary(pdf_buffer, 200, {'Content-Type': 'application/pdf'})
+'''

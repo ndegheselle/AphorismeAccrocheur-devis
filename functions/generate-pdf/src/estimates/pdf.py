@@ -1,13 +1,12 @@
-from lib.html import generate as generateHtml
-from lib.pdf import generate as generatePdf
-from model import repository
-
+from src.lib import html
+from src.lib import pdf
+from src.estimates import repository
 
 async def generate(estimate_id):
     # Get estimate by ID
-    estimate = await repository.get_by_id(estimate_id)
+    # estimate = await repository.get_by_id(estimate_id)
+    estimate = {}
     # Generate HTML content
-    html_content = await generateHtml(estimate)
+    html_content = await html.generate("estimate", estimate)
     # Generate PDF from HTML
-    return await generatePdf(html_content)
-
+    return await pdf.generate(html_content)

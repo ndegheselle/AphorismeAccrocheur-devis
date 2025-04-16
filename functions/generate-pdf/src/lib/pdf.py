@@ -55,8 +55,3 @@ async def generate(html_content):
         # Clean up the temporary file
         if os.path.exists("temp.html"):
             os.remove("temp.html")
-
-# Export the function
-generate_pdf = {
-    "generate": generate
-}

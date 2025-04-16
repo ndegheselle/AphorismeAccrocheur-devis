@@ -1,4 +1,4 @@
-from appwrite import database, collections
+from src.appwrite import databases, database_id, collections
 
 async def get_by_id(id):
     """
@@ -10,9 +10,4 @@ async def get_by_id(id):
     Returns:
         dict: The retrieved estimate document
     """
-    return await database['db'].get_document(database['id'], collections['estimates'], id)
-
-# Repository object with methods
-repository = {
-    "get_by_id": get_by_id
-}
+    return await databases.get_document(database_id, collections['estimates'], id)
