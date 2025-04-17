@@ -1,57 +1,60 @@
-import asyncio
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
+import time
 import base64
-import requests
-import os
 
 async def generate(html_content):
-    # If using browserless.io
-    browserless_api_key = os.environ.get('BROWSERLESS_API_KEY')
-    browserless_url = f"https://chrome.browserless.io/pdf?token={browserless_api_key}"
-    
-    # Define PDF options
-    pdf_options = {
-        "format": "A4",
-        "margin": {
-            "top": "20mm",
-            "right": "20mm",
-            "bottom": "20mm",
-            "left": "20mm"
-        },
-        "displayHeaderFooter": True,
-        "footerTemplate": '<div style="color: #444; font-size: 10px; text-align: center; width: 100%;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>'
-    }
-    
-    # Method 2: Using Selenium with Chrome
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    
-    driver = webdriver.Chrome(options=chrome_options)
-    
+    # Set up the Chrome options for headless browsing
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--window-size=1280,1696')  # Set window size to ensure full page rendering
+
+    # Initialize the WebDriver
+    driver = None
     try:
-        # Create a temporary HTML file
-        with open("temp.html", "w") as f:
-            f.write(html_content)
-        
-        # Load the HTML file
-        driver.get("file://" + os.path.abspath("temp.html"))
-        
-        # Set page size to A4
-        driver.execute_cdp_cmd("Page.setDocumentContent", {"frameId": driver.execute_script("return document.querySelector('iframe').frameId"), "html": html_content})
-        
-        # Generate PDF
-        pdf_data = driver.execute_cdp_cmd("Page.printToPDF", pdf_options)
-        
-        # Convert base64 to buffer
-        pdf_buffer = base64.b64decode(pdf_data['data'])
-        
-        return pdf_buffer
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+
+        # Load the HTML content
+        driver.get("data:text/html;charset=utf-8," + html_content)
+
+        # Wait for the page to fully render
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, 'body'))
+        )
+
+        # Set the print options
+        print_options = {
+            'landscape': False,
+            'displayHeaderFooter': False,
+            'printBackground': True,
+            'preferCSSPageSize': True,
+            'scale': 1,  # Ensure the scale is set to 1 for full-size rendering
+        }
+
+        # Generate the PDF
+        pdf_path = 'output.pdf'
+        pdf_base64 = driver.execute_cdp_cmd('Page.printToPDF', print_options)['data']
+
+        # Decode the base64-encoded PDF data
+        pdf_data = base64.b64decode(pdf_base64)
+
+        # Save the PDF to a file
+        with open(pdf_path, 'wb') as file:
+            file.write(pdf_data)
+
+        print(f"PDF has been saved to {pdf_path}")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
     finally:
-        driver.quit()
-        # Clean up the temporary file
-        if os.path.exists("temp.html"):
-            os.remove("temp.html")
+        # Close the WebDriver if it was initialized
+        if driver:
+            driver.quit()
