@@ -1,6 +1,5 @@
 import os
 from appwrite.client import Client
-from appwrite.services.databases import Databases
 
 # Set this from the main.py file
 databases = None

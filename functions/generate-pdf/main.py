@@ -16,7 +16,7 @@ def main(context):
     else:
         return context.res.text("Access denied: This function requires authentication. Please sign in to continue.")
     
-    databases = Database(client)
+    databases = Databases(client)
     # Parse request parameters
     params = context.req.json()
     
