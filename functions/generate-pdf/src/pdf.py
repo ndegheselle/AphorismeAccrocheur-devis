@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import base64
-import .repository
+from .repository import get_estimate_by_id
 
 async def generate(html_content):
     # Set up the Chrome options for headless browsing
@@ -54,7 +54,7 @@ async def generate(html_content):
 
 async def generate_estimate(estimate_id):
     # Get estimate by ID
-    estimate = await repository.get_estimate_by_id(estimate_id)
+    estimate = await get_estimate_by_id(estimate_id)
     
     # Generate HTML content
     html_content = await html.generate("estimate", estimate)
