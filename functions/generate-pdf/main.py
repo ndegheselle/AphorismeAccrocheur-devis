@@ -2,22 +2,23 @@ import os
 from appwrite.client import Client
 from appwrite.services.databases import Databases
 import src.estimates.pdf as estimate
+import asyncio
 
-async def main(req, res, log):
+def main(context):
     client = Client()
     client.set_project(os.environ.get('APPWRITE_FUNCTION_PROJECT_ID'))
     
-    if 'x-appwrite-user-jwt' in req.headers:
-        client.set_jwt(req.headers['x-appwrite-user-jwt'])
+    if 'x-appwrite-user-jwt' in context.req.headers:
+        client.set_jwt(context.req.headers['x-appwrite-user-jwt'])
     else:
-        return res.text("Access denied: This function requires authentication. Please sign in to continue.")
+        return context.res.text("Access denied: This function requires authentication. Please sign in to continue.")
     
     # Set database client
     repository.db = Databases(client)
     # Parse request parameters
-    params = req.json()
+    params = context.req.json()
     
-    pdf_buffer = await estimate.generate(params['id']);
+    pdf_buffer = asyncio.run(estimate.generate(params['id']));
 
     # Return PDF as binary response
-    return res.binary(pdf_buffer, 200, {'Content-Type': 'application/pdf'})
+    return context.res.binary(pdf_buffer, 200, {'Content-Type': 'application/pdf'})
