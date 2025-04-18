@@ -11,7 +11,7 @@ async def generate(template_name, data):
     Returns:
         str: Rendered HTML content
     """
-    template_path = os.path.join(os.path.dirname(__file__), "../../templates/{}.hbs".format(template_name))
+    template_path = os.path.join(os.path.dirname(__file__), "templates/{}.hbs".format(template_name))
     # Create a Handlebars compiler
     compiler = pybars.Compiler()
     

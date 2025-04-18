@@ -1,8 +1,8 @@
 import os
 from appwrite.client import Client
 from appwrite.services.databases import Databases
-import src.estimates.pdf as estimate
 import asyncio
+import pdf
 
 def main(context):
     client = Client()
@@ -18,7 +18,7 @@ def main(context):
     # Parse request parameters
     params = context.req.json()
     
-    pdf_buffer = asyncio.run(estimate.generate(params['id']));
+    pdf_buffer = asyncio.run(pdf.generate_estimate(params['id']));
 
     # Return PDF as binary response
     return context.res.binary(pdf_buffer, 200, {'Content-Type': 'application/pdf'})
