@@ -2,7 +2,7 @@ import os
 from appwrite.client import Client
 from appwrite.services.databases import Databases
 import asyncio
-import pdf
+import .pdf
 
 def main(context):
     client = Client()

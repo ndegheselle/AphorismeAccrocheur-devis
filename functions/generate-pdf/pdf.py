@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import base64
-import repository
+import .repository
 
 async def generate(html_content):
     # Set up the Chrome options for headless browsing
