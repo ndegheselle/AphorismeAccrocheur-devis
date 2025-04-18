@@ -18,7 +18,7 @@ def main(context):
     
     databases = Databases(client)
     # Parse request parameters
-    params = context.req.json()
+    params = context.bodyJson
     
     pdf_buffer = asyncio.run(generate_estimate(params["id"]));
 
