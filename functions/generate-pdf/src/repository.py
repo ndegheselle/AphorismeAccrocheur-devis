@@ -2,16 +2,8 @@ import os
 from appwrite.client import Client
 from appwrite.services.databases import Databases
 
-# Initialize the Appwrite client
-client = Client()
-
-# Configure the client
-client.set_endpoint(os.environ.get('APPWRITE_ENDPOINT'))
-client.set_project(os.environ.get('APPWRITE_FUNCTION_PROJECT_ID'))
-client.set_key(os.environ.get('APPWRITE_API_KEY'))
-
-# Initialize services
-databases = Databases(client)
+# Set this from the main.py file
+databases = None
 
 # Database and collection IDs
 database_id = "67dda6ca000771a6a0f1"
