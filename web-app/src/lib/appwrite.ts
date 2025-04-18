@@ -21,5 +21,5 @@ export const collections = {
     business: "67f3997b0019b415c683",
 };
 export const functionIds = {
-    generatePDF: "67f8fe7100307fb824db"
+    generatePDF: "680254df000ca5846ce8"
 }

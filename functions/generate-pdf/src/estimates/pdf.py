@@ -4,8 +4,7 @@ from src.estimates import repository
 
 async def generate(estimate_id):
     # Get estimate by ID
-    # estimate = await repository.get_by_id(estimate_id)
-    estimate = {}
+    estimate = await repository.get_by_id(estimate_id)
     # Generate HTML content
     html_content = await html.generate("estimate", estimate)
     # Generate PDF from HTML
