@@ -1,7 +1,7 @@
 import pybars
 import os
 
-async def generate(template_name, data):
+def generate(template_name, data):
     """
     Generate HTML estimate from template and data
     

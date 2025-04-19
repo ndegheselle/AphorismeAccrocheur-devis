@@ -7,7 +7,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import base64
 from .repository import get_estimate_by_id
 
-async def generate(html_content):
+def generate(html_content):
     # Set up the Chrome options for headless browsing
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
@@ -52,12 +52,12 @@ async def generate(html_content):
         if driver:
             driver.quit()
 
-async def generate_estimate(estimate_id):
+def generate_estimate(estimate_id):
     # Get estimate by ID
-    estimate = await get_estimate_by_id(estimate_id)
+    estimate = get_estimate_by_id(estimate_id)
     
     # Generate HTML content
-    html_content = await html.generate("estimate", estimate)
+    html_content = html.generate("estimate", estimate)
     
     # Generate PDF from HTML and return the byte array
-    return await generate(html_content)
+    return generate(html_content)
