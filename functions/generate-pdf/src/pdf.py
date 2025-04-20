@@ -55,7 +55,7 @@ def generate(html_content):
 
 def generate_estimate(estimate_id):
     # Get estimate by ID
-    estimate = get_estimate_by_id(estimate_id)
+    estimate = repository.get_estimate_by_id(estimate_id)
     
     # Generate HTML content
     html_content = html.generate("estimate", estimate)
