@@ -53,12 +53,12 @@ def generate(html_content):
         if driver:
             driver.quit()
 
-def generate_estimate(estimate_id):
-    # Get estimate by ID
-    estimate = repository.get_estimate_by_id(estimate_id)
-    
+def generate_estimate_from_id(estimate_id):
+    data = repository.get_estimate_by_id(estimate_id)
+    return generate_estimate(data)
+
+def generate_estimate(data):
     # Generate HTML content
-    html_content = html.generate("estimate", estimate)
-    
+    html_content = html.generate("estimate", data)
     # Generate PDF from HTML and return the byte array
     return generate(html_content)

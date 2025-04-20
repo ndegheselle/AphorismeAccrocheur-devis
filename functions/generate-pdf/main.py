@@ -1,8 +1,8 @@
 import os
 from appwrite.client import Client
 from appwrite.services.databases import Databases
-from .src.pdf import generate_estimate
 from .src.repository import databases
+from .src.pdf import generate_estimate_from_id
 
 def main(context):
     client = (
@@ -19,7 +19,7 @@ def main(context):
     # Parse request parameters
     params = context.req.body_json
     
-    pdf_buffer = generate_estimate(params["id"])
+    pdf_buffer = generate_estimate_from_id(params["id"])
 
     # Return PDF as binary response
     return context.res.binary(pdf_buffer, 200, {"Content-Type": "application/pdf"})
