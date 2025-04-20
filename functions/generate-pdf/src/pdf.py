@@ -5,7 +5,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import base64
-from .repository import get_estimate_by_id
+from . import repository
+from . import html
 
 def generate(html_content):
     # Set up the Chrome options for headless browsing
