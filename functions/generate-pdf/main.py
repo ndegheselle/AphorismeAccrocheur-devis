@@ -24,6 +24,6 @@ def main(context):
         return context.res.json({"error": "Missing required parameter: id"}, 400)
 
     pdf_buffer = generate_estimate_from_id(params["id"])
-    context.log()
+    context.log(pdf_buffer)
     # Return PDF as binary response
     return context.res.binary(pdf_buffer, 200, {"Content-Type": "application/pdf"})
