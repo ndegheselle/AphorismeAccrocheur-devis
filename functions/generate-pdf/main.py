@@ -13,7 +13,7 @@ def main(context):
     if "x-appwrite-user-jwt" in context.req.headers:
         client.set_jwt(context.req.headers["x-appwrite-user-jwt"])
     else:
-        return context.res.text("Access denied: This function requires authentication. Please sign in to continue.")
+        return context.res.json({"error": "Access denied: This function requires authentication. Please sign in to continue."}, 401)
     
     databases = Databases(client)
     # Parse request parameters
