@@ -17,8 +17,12 @@ def main(context):
     
     databases = Databases(client)
     # Parse request parameters
-    params = context.req.body_json
-    
+    # params = context.req.body_json
+    params = context.req.query
+
+    if "id" not in params:
+        return context.res.json({"error": "Missing required parameter: id"}, 400)
+
     pdf_buffer = generate_estimate_from_id(params["id"])
 
     # Return PDF as binary response

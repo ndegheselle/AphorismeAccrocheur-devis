@@ -7,9 +7,10 @@ async function generateEstimatePdf(estimateId: string)
         functionIds.generatePDF,
         JSON.stringify({id: estimateId}),
         false,
+        undefined,
         ExecutionMethod.GET
     );
-
+    console.log(execution);
     if (execution.status === 'completed') {
         const blob = new Blob([execution.responseBody], { type: 'application/pdf' });
         const url = URL.createObjectURL(blob);
