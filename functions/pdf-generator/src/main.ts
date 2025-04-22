@@ -1,5 +1,65 @@
-import * as fs from 'fs';
-import { generateFakeOrder } from './faker.js';
+import puppeteer from 'puppeteer';
+
+const testHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test PDF Generation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      line-height: 1.6;
+    }
+    h1 { color: #333; }
+    .content {
+      border: 1px solid #ddd;
+      padding: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>HTML to PDF Test</h1>
+  <div class="content">
+    <p>This is a test page for converting HTML to PDF using Puppeteer in Node.js 22.</p>
+    <p>Current date: ${new Date().toLocaleDateString()}</p>
+  </div>
+</body>
+</html>
+`;
+
+async function htmlToPdfBuffer(html: string) {
+  // Launch browser
+  const browser = await puppeteer.launch({
+    headless: true 
+  });
+  
+  try {
+    // Create a new page
+    const page = await browser.newPage();
+    
+    // Set content to our HTML
+    await page.setContent(html, { waitUntil: 'networkidle0' });
+    
+    // Generate PDF as buffer
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+      margin: {
+        top: '20px',
+        right: '20px',
+        bottom: '20px',
+        left: '20px'
+      }
+    });
+    
+    return pdfBuffer;
+  } finally {
+    // Always close the browser
+    await browser.close();
+  }
+}
 
 type Context = {
   req: any;
@@ -9,12 +69,6 @@ type Context = {
 };
 
 export default async ({ res, req, log, error }: Context) => {
-  const fakeOrder = generateFakeOrder();
-  log(`Generated fake order: ${JSON.stringify(fakeOrder, null, 2)}`);
-  const content = 'Some content!';
-  fs.writeFileSync('file.txt', content);
-  log("Writting ...")
-  const bytes = fs.readFileSync('file.txt');
-  log("Sending ...")
-  return res.binary(bytes);
+  const pdfBuffer = await htmlToPdfBuffer(testHtml);
+  return res.binary(pdfBuffer);
 };
