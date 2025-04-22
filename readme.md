@@ -9,3 +9,9 @@ docker run -it --rm `
     --entrypoint="install" `
     appwrite/appwrite:1.5.10
 ```
+
+## Appwrite feedback
+
+- Relationship are messy (can't easily query / include / exclude childs or parent)
+    - Only alternative is doing the relationship yourself
+- Function developpement is not documented but specific case are a pain (sending a file in binary format)

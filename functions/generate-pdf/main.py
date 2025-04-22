@@ -10,6 +10,7 @@ def main(context):
             .set_project(os.environ["APPWRITE_FUNCTION_PROJECT_ID"])
     )
     
+    context.log("Checking user authentification.")
     if "x-appwrite-user-jwt" in context.req.headers:
         client.set_jwt(context.req.headers["x-appwrite-user-jwt"])
     else:
@@ -23,7 +24,8 @@ def main(context):
     if "id" not in params:
         return context.res.json({"error": "Missing required parameter: id"}, 400)
 
+    context.log("Starting generation ...")
     pdf_buffer = generate_estimate_from_id(params["id"])
-    context.log(pdf_buffer)
+    context.log("Pdf generated.")
     # Return PDF as binary response
-    return context.res.binary(pdf_buffer, 200, {"Content-Type": "application/pdf"})
+    return context.res.binary(pdf_buffer)
