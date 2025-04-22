@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { execSync } from 'node:child_process';
 import puppeteer from 'puppeteer';
 
 let installed = false;
@@ -35,7 +35,13 @@ const testHtml = `
 async function htmlToPdfBuffer(html: string) {
   // Launch browser
   const browser = await puppeteer.launch({
-    headless: true 
+    headless: true,
+    args: [
+      "--no-sandbox",
+      "--headless",
+      "--disable-gpu",
+      "--disable-dev-shm-usage",
+    ],
   });
   
   try {
@@ -79,7 +85,6 @@ export default async ({ res, req, log, error }: Context) => {
     log('Chromium installed.');
     installed = true;
   }
-
 
   const pdfBuffer = await htmlToPdfBuffer(testHtml);
   return res.binary(pdfBuffer);
