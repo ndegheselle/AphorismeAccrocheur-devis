@@ -1,7 +1,7 @@
 import { Buffer } from 'node:buffer';
 import { PDFDocument } from 'pdf-lib';
 
-export async function createPdf({ id, date, name, items, total }) {
+export async function createPdf({ id, date, name, items, total }: any) {
   const document = await PDFDocument.create();
   const page = document.addPage([595.28, 841.89]); // A4 size
 
@@ -28,7 +28,7 @@ export async function createPdf({ id, date, name, items, total }) {
 
   const orderList = items
     .map(
-      ({ description, quantity, cost }) =>
+      ({ description, quantity, cost }: any) =>
         `${description} x ${quantity} = $${cost}`
     )
     .join('\n');
