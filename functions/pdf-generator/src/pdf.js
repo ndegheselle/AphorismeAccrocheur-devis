@@ -1,5 +1,4 @@
 import { PDFDocument } from 'pdf-lib';
-import { Buffer } from 'node:buffer';
 
 export async function createPdf({ id, date, name, items, total }) {
   const document = await PDFDocument.create();
@@ -37,5 +36,5 @@ export async function createPdf({ id, date, name, items, total }) {
 
   const pdfBytes = await document.save();
 
-  return Buffer.from(pdfBytes);
+  return ArrayBuffer.from(pdfBytes);
 }
