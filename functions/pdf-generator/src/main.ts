@@ -1,4 +1,7 @@
+import { execSync } from 'child_process';
 import puppeteer from 'puppeteer';
+
+let installed = false;
 
 const testHtml = `
 <!DOCTYPE html>
@@ -69,6 +72,15 @@ type Context = {
 };
 
 export default async ({ res, req, log, error }: Context) => {
+  if (installed) {
+    log('Chromium already installed.');
+  } else {
+    execSync('apk add /usr/local/server/src/function/*.apk');
+    log('Chromium installed.');
+    installed = true;
+  }
+
+
   const pdfBuffer = await htmlToPdfBuffer(testHtml);
   return res.binary(pdfBuffer);
 };
