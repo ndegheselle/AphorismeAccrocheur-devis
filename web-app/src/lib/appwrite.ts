@@ -1,4 +1,4 @@
-import { Client, Databases, Account, Storage, Functions } from 'appwrite';
+import { Account, Client, Databases, Functions, Storage } from 'appwrite';
 
 export const projectId = "67dd2fe50025a388a4ea";
 export const endpoint = "https://cloud.appwrite.io/v1";
@@ -21,5 +21,5 @@ export const collections = {
     business: "67f3997b0019b415c683",
 };
 export const functionIds = {
-    generatePDF: "680254df000ca5846ce8"
+    generatePDF: "680775eb002749cc755b"
 }
