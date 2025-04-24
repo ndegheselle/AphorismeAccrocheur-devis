@@ -1,6 +1,4 @@
-import Handlebars from 'handlebars';
-
-const estimateTemplate = /*html*/`
+export default /*html*/`
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,13 +49,3 @@ const estimateTemplate = /*html*/`
 </body>
 </html>
 `;
-
-async function generateEstimate(data: any) {
-    const template = Handlebars.compile(estimateTemplate);
-    // Apply the data to the template
-    return template(data);
-}
-
-export default {
-    generateEstimate
-}

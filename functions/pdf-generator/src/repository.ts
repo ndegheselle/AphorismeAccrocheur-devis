@@ -1,6 +1,6 @@
 import { Client, Databases } from 'node-appwrite';
 
-let database: Databases;
+let databases: Databases;
 let databaseId = "67dda6ca000771a6a0f1";
 const bucketId = "67f4d5c000293a2abc0f";
 const collections = {
@@ -9,17 +9,26 @@ const collections = {
     business: "67f3997b0019b415c683",
 };
 
-async function getById(id: string)
+async function getEstimateById(id: string)
 {
-    return await database.getDocument(databaseId, collections.estimates, id);
+    return await databases.getDocument(databaseId, collections.estimates, id);
+}
+
+async function getBusiness()
+{
+    let result = await databases.listDocuments(databaseId, collections.business);
+    if (result.documents.length == 0)
+        return null;
+    return result.documents[0];
 }
 
 async function init(client: Client)
 {
-    database = new Databases(client); 
+    databases = new Databases(client); 
 }
 
 export default {
     init,
-    getById
+    getEstimateById,
+    getBusiness
 };

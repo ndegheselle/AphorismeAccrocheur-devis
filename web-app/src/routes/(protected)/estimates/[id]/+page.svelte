@@ -12,13 +12,12 @@
     import BusinessSummary from "../../user/business/Summary.svelte";
     import { repository as businessRepo, Business } from "$lib/models/business";
     import serverless from "$lib/functions";
-    import Error from "$routes/+error.svelte";
-    import { load } from "$routes/+layout";
+    import PrintModal from "./PrintModal.svelte";
 
     let estimate = $state<Estimate>();
     let client = $state<Client>();
     let business = $state<Business | null>(null);
-    let loading: HTMLDialogElement;
+    let modal: PrintModal;
 
     onMount(async () => {
         estimate = await repository.getById(page.params.id);
@@ -30,19 +29,7 @@
         goto(`/estimates/new?basedOn=${estimate?.$id}`);
     }
 
-    async function print() {
-        if (estimate?.$id == null) return;
-
-        loading.show();
-        try {
-            await serverless.generateEstimatePdf(estimate.$id);
-        } catch {
-            alerts.error("Impossible de générer le PDF.");
-        }
-        loading.close();
-    }
-
-    function invoice() {
+    function createInvoice() {
         confirmation
             .show(
                 "Facturer le devis",
@@ -95,13 +82,13 @@
                             </button>
                         </li>
                         <li>
-                            <button onclick={print}>
+                            <button onclick={() => modal.show(business, estimate)}>
                                 <i class="fa-solid fa-print"></i>
                                 Imprimer
                             </button>
                         </li>
                         <li>
-                            <button onclick={invoice}>
+                            <button onclick={createInvoice}>
                                 <i class="fa-solid fa-file-invoice-dollar"></i>
                                 Facturer
                             </button>
@@ -203,11 +190,4 @@
     </div>
 </div>
 
-<dialog bind:this={loading} class="modal">
-    <div class="modal-box flex justify-center">
-            <span class="loading loading-infinity loading-xl"></span>
-            <span class="text-xl ms-4">
-                Génération du pdf en cours ...
-            </span>
-    </div>
-</dialog>
+<PrintModal bind:this={modal} />

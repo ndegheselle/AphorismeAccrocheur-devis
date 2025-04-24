@@ -1,7 +1,6 @@
-import pdf from "./lib/pdf.js";
+import pdf from "./pdf.js";
 import { Client, Databases } from 'node-appwrite';
 import repository from './repository.js';
-import html from './lib/html.js';
 
 type Context = {
   req: any;
@@ -30,8 +29,10 @@ export default async ({ res, req, log, error }: Context) => {
   repository.init(client);
   pdf.init(log);
 
-  const estimate = await repository.getById(params.id);
-  const htmlContent = await html.generateEstimate(estimate);
+  const business = await repository.getBusiness();
+  const estimate = await repository.getEstimateById(params.id);
+
+  const htmlContent = await html.generateEstimate(business, estimate);
   const pdfBuffer = await pdf.htmlToPdfBuffer(htmlContent);
 
   return res.binary(pdfBuffer);

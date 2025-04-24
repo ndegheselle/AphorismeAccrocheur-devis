@@ -1,12 +1,13 @@
 import { functionIds, functions } from '$lib/appwrite';
 import { ExecutionMethod } from "appwrite";
+import type { Estimate } from './models/estimates';
 
-async function generateEstimatePdf(estimateId: string) {
+async function generateEstimatePdf(estimate: Estimate) {
     const execution = await functions.createExecution(
         functionIds.generatePDF,
         undefined,
         false,
-        `?id=${estimateId}`,
+        `?id=${estimate.$id}`,
         ExecutionMethod.GET
     );
     const responseData = JSON.parse(execution.responseBody);
@@ -19,7 +20,7 @@ async function generateEstimatePdf(estimateId: string) {
     // Create a temporary link element to trigger the download
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'document.pdf'; // Name the file as you wish
+    link.download = `devis-${estimate.name}.pdf`; // Name the file as you wish
     link.click();
     // Clean up by revoking the object URL
     setTimeout(() => URL.revokeObjectURL(url), 100);
