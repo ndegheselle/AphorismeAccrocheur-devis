@@ -1,7 +1,5 @@
 <script lang="ts">
     import { t } from "$lib/translations/index";
-    import { page } from "$app/state";
-    import { onMount } from "svelte";
     import { repository, Estimate } from "$lib/models/estimates";
     import { repository as clientRepo, Client } from "$lib/models/clients";
     import alerts from "$lib/stores/alerts.svelte";
@@ -15,13 +13,6 @@
     let modal: HTMLDialogElement;
     let iframe: HTMLIFrameElement;
 
-    onMount(async () => {
-        estimate = await repository.getById(page.params.id);
-        client = await clientRepo.getById(estimate?.clientId!);
-        business = await businessRepo.getFirstOrDefault();
-        // Ici on aime niconi <3
-    });
-
     async function print() {
         if (estimate?.$id == null) return;
 
@@ -32,10 +23,16 @@
         }
     }
 
-    export function show(_business: Business | null, _estimate: Estimate | undefined) {
+    export async function show(_business: Business | null, _estimate: Estimate, _client: Client) {
         business = _business;
         estimate = _estimate;
+        client = _client;
         modal.show();
+        
+        iframe.srcdoc = await html.generateEstimate({
+            logoUrl: business?.logoUrl
+        }, {});
+        console.log(iframe.srcdoc);
     }
 
     export function close() {
@@ -44,9 +41,9 @@
 </script>
 
 <dialog bind:this={modal} class="modal">
-    <div class="modal-box flex justify-center">
+    <div class="modal-box h-11/12 w-lg flex flex-col">
 
-        <iframe bind:this={iframe} title="Preview PDF">
+        <iframe bind:this={iframe} title="Preview PDF" class="w-full h-full rounded-md">
 
         </iframe>
 
@@ -55,7 +52,7 @@
                 {$t("common.cancel")}
             </button>
             <button class="btn btn-primary" onclick={() => print()}>
-                Imprimmer
+                Imprimer
             </button>
         </div>
     </div>

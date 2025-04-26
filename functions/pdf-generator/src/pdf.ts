@@ -3,35 +3,6 @@ import { execSync } from 'node:child_process';
 
 let installed = false;
 
-const testHtml = `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Test PDF Generation</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      line-height: 1.6;
-    }
-    h1 { color: #333; }
-    .content {
-      border: 1px solid #ddd;
-      padding: 20px;
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
-  <h1>HTML to PDF Test</h1>
-  <div class="content">
-    <p>This is a test page for converting HTML to PDF using Puppeteer in Node.js 22.</p>
-    <p>Current date: ${new Date().toLocaleDateString()}</p>
-  </div>
-</body>
-</html>
-`;
-
 function init(log: any) {
   if (installed) {
     log('Chromium already installed.');
@@ -44,7 +15,7 @@ function init(log: any) {
 
 async function htmlToPdfBuffer(html: string) {
   // Launch browser
-  const browser = await puppeteer.launch({
+  const browser = await puppeteer.launch({ 
     headless: true,
     args: [
       "--no-sandbox",

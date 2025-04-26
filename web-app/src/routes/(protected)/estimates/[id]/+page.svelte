@@ -21,8 +21,8 @@
 
     onMount(async () => {
         estimate = await repository.getById(page.params.id);
-        client = await clientRepo.getById(estimate?.clientId!);
         business = await businessRepo.getFirstOrDefault();
+        client = await clientRepo.getById(estimate?.clientId!);
     });
 
     function clone() {
@@ -82,7 +82,7 @@
                             </button>
                         </li>
                         <li>
-                            <button onclick={() => modal.show(business, estimate)}>
+                            <button onclick={() => modal.show(business, estimate!, client!)}>
                                 <i class="fa-solid fa-print"></i>
                                 Imprimer
                             </button>
