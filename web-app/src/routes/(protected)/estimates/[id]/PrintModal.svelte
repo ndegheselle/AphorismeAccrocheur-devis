@@ -1,11 +1,11 @@
 <script lang="ts">
     import { t } from "$lib/translations/index";
-    import { repository, Estimate } from "$lib/models/estimates";
-    import { repository as clientRepo, Client } from "$lib/models/clients";
+    import { Estimate } from "$lib/models/estimates";
+    import { Client } from "$lib/models/clients";
     import alerts from "$lib/stores/alerts.svelte";
-    import { repository as businessRepo, Business } from "$lib/models/business";
+    import { Business } from "$lib/models/business";
     import serverless from "$lib/functions";
-    import html from 'template-generator/html';
+    import html from "template-generator/html";
 
     let estimate = $state<Estimate>();
     let client = $state<Client>();
@@ -23,15 +23,22 @@
         }
     }
 
-    export async function show(_business: Business | null, _estimate: Estimate, _client: Client) {
+    export async function show(
+        _business: Business | null,
+        _estimate: Estimate,
+        _client: Client,
+    ) {
         business = _business;
         estimate = _estimate;
         client = _client;
         modal.show();
-        
-        iframe.srcdoc = await html.generateEstimate({
-            logoUrl: business?.logoUrl
-        }, {});
+
+        iframe.srcdoc = await html.generateEstimate(
+            {
+                logoUrl: business?.logoUrl,
+            },
+            {},
+        );
         console.log(iframe.srcdoc);
     }
 
@@ -41,10 +48,11 @@
 </script>
 
 <dialog bind:this={modal} class="modal">
-    <div class="modal-box h-11/12 w-lg flex flex-col">
-
-        <iframe bind:this={iframe} title="Preview PDF" class="w-full h-full rounded-md">
-
+    <div class="modal-box h-11/12 max-w-4xl flex flex-col">
+        <iframe
+            bind:this={iframe}
+            title="Preview PDF"
+            class="w-full h-full rounded-md">
         </iframe>
 
         <div class="modal-action">

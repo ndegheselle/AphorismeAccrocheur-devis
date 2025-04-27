@@ -163,27 +163,25 @@
     <div class="grid grid-cols-1 lg:grid-cols-6 mt-2 gap-2">
         <div
             class="card bg-base-200 shadow-md col-span-2 lg:col-span-1 lg:col-start-6 lg:col-end-7">
-            <div class="card-body">
+            <div class="card-body gap-0">
                 <h2 class="card-title">Total</h2>
-                <div>
-                    <div class="flex">
-                        <span class="font-thin opacity-50">HT</span>
-                        <span class="ms-auto text-right">
-                            {estimate?.totalWithoutTax}€
-                        </span>
-                    </div>
-                    <div class="flex">
-                        <span class="font-thin opacity-50">TVA</span>
-                        <span class="ms-auto text-right">
-                            {estimate?.totalTax}€
-                        </span>
-                    </div>
-                    <div class="flex">
-                        <span class="font-thin opacity-50">TTC</span>
-                        <span class="ms-auto text-right">
-                            {estimate?.total}€
-                        </span>
-                    </div>
+                <div class="flex">
+                    <span class="font-thin opacity-50">HT</span>
+                    <span class="ms-auto text-right">
+                        {estimate?.totalWithoutTax}€
+                    </span>
+                </div>
+                <div class="flex">
+                    <span class="font-thin opacity-50">TVA</span>
+                    <span class="ms-auto text-right">
+                        {estimate?.totalTax}€
+                    </span>
+                </div>
+                <div class="flex">
+                    <span class="font-thin opacity-50">TTC</span>
+                    <span class="ms-auto text-right">
+                        {estimate?.total}€
+                    </span>
                 </div>
             </div>
         </div>
