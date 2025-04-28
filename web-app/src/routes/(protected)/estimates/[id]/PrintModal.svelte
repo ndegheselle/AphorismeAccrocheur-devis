@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { t } from "$lib/translations/index";
-    import { Estimate } from "$lib/models/estimates";
-    import { Client } from "$lib/models/clients";
-    import alerts from "$lib/stores/alerts.svelte";
-    import { Business } from "$lib/models/business";
     import serverless from "$lib/functions";
-    import html from "template-generator/html";
+    import { Business } from "$lib/models/business";
+    import { Client } from "$lib/models/clients";
+    import { Estimate } from "$lib/models/estimates";
+    import html from "$lib/pdf/html";
+    import alerts from "$lib/stores/alerts.svelte";
+    import { t } from "$lib/translations/index";
 
     let estimate = $state<Estimate>();
     let client = $state<Client>();
@@ -34,12 +34,10 @@
         modal.show();
 
         iframe.srcdoc = await html.generateEstimate(
-            {
-                logoUrl: business?.logoUrl,
-            },
-            {},
+            business,
+            client,
+            estimate,
         );
-        console.log(iframe.srcdoc);
     }
 
     export function close() {

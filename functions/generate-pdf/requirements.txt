@@ -1,4 +1,0 @@
-appwrite
-pybars3
-selenium
-webdriver-manager

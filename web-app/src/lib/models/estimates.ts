@@ -1,11 +1,9 @@
-import { databases, databaseId, collections } from '$lib/appwrite';
-import auth from '$lib/stores/auth.svelte';
-import { ID, Permission, Role, Query } from "appwrite";
+import { collections, databaseId, databases } from '$lib/appwrite';
 import { copyFrom } from '$lib/base/class';
-import { Client } from '$lib/models/clients';
-import { PaginatedResults} from '$lib/base/results';
+import { PaginatedResults } from '$lib/base/results';
 import { round } from '$lib/base/utils';
-import type { get } from 'svelte/store';
+import auth from '$lib/stores/auth.svelte';
+import { ID, Permission, Query, Role } from "appwrite";
 
 export class EstimateLine
 {
@@ -91,7 +89,7 @@ async function getByClient(clientId: string): Promise<Estimate[]>
     let result = await databases.listDocuments(databaseId, collections.estimates, [
         Query.equal('clientId', clientId)
     ]);
-    let estimates: Estimate[] = result.documents.map(doc => copyFrom(Estimate, doc));
+    let estimates: Estimate[] = result.documents.map(doc => copyFromResult(doc));
     return estimates;
 }
 
@@ -105,6 +103,7 @@ function copyFromResult(estimate: any): Estimate
 {
     estimate.issueDate = estimate.issueDate ? new Date(estimate.issueDate) : null;
     estimate.validityDate = estimate.validityDate ? new Date(estimate.validityDate) : null;
+    estimate = copyFrom(Estimate, estimate);
     estimate.lines = estimate.lines.map((line: any) => {
         return copyFrom(EstimateLine, line);
     });

@@ -1,17 +1,15 @@
 <script lang="ts">
-    import { t } from "$lib/translations/index";
-    import { page } from "$app/state";
-    import { onMount } from "svelte";
-    import { repository, Estimate } from "$lib/models/estimates";
-    import { repository as clientRepo, Client } from "$lib/models/clients";
-    import { round, formatDate } from "$lib/base/utils";
     import { goto } from "$app/navigation";
-    import confirmation from "$lib/stores/confirm.svelte";
+    import { page } from "$app/state";
+    import { formatDate } from "$lib/base/utils";
+    import { Business, repository as businessRepo } from "$lib/models/business";
+    import { Client, repository as clientRepo } from "$lib/models/clients";
+    import { Estimate, repository } from "$lib/models/estimates";
     import alerts from "$lib/stores/alerts.svelte";
+    import confirmation from "$lib/stores/confirm.svelte";
+    import { onMount } from "svelte";
     import ClientSummary from "../../clients/Summary.svelte";
     import BusinessSummary from "../../user/business/Summary.svelte";
-    import { repository as businessRepo, Business } from "$lib/models/business";
-    import serverless from "$lib/functions";
     import PrintModal from "./PrintModal.svelte";
 
     let estimate = $state<Estimate>();
