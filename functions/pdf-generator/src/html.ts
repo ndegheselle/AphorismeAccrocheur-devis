@@ -10,7 +10,6 @@ Handlebars.registerHelper('formatDate', function(date: Date) {
 async function generateEstimate(business: any, client: any, estimate: any) {
     const template = Handlebars.compile(estimateTemplate);
     // Apply the data to the template
-    console.log('estimate', estimate);
     return template({
         business,
         client,

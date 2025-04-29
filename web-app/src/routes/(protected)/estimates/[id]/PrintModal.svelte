@@ -11,16 +11,20 @@
     let client = $state<Client>();
     let business = $state<Business | null>(null);
     let modal: HTMLDialogElement;
+    let loading: HTMLDialogElement;
     let iframe: HTMLIFrameElement;
 
     async function print() {
         if (estimate?.$id == null) return;
 
+        modal.close();
+        loading.show();
         try {
             await serverless.generateEstimatePdf(estimate);
         } catch {
             alerts.error("Impossible de générer le PDF.");
         }
+        loading.close();
     }
 
     export async function show(
@@ -33,11 +37,7 @@
         client = _client;
         modal.show();
 
-        iframe.srcdoc = await html.generateEstimate(
-            business,
-            client,
-            estimate,
-        );
+        iframe.srcdoc = await html.generateEstimate(business, client, estimate);
     }
 
     export function close() {
@@ -64,11 +64,9 @@
     </div>
 </dialog>
 
-<!--
-<div class="modal-box flex justify-center">
-    <span class="loading loading-infinity loading-xl"></span>
-    <span class="text-xl ms-4">
-        Génération du pdf en cours ...
-    </span>
-</div>
--->
+<dialog bind:this={loading} class="modal">
+    <div class="modal-box flex justify-center">
+        <span class="loading loading-infinity loading-xl"></span>
+        <span class="text-xl ms-4">Génération du pdf en cours ...</span>
+    </div>
+</dialog>
