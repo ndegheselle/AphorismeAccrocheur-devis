@@ -177,9 +177,9 @@
                 </div>
                 <div class="flex">
                     <span class="font-thin opacity-50">TTC</span>
-                    <span class="ms-auto text-right">
+                    <b class="ms-auto text-right">
                         {estimate?.total}€
-                    </span>
+                    </b>
                 </div>
             </div>
         </div>

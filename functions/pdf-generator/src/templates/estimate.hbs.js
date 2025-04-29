@@ -9,14 +9,13 @@ export default /*html*/`
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body>
-
+<body class="p-4">
     <header>
         <div class="flex justify-between">
             <div>
                 <h1 class="text-5xl font-light">DEVIS</h1>
                 <div class="badge badge-ghost font-light text-xl">
-                    <h2>n°{{estimate.reference}}</h2>
+                    <h2>{{estimate.reference}}</h2>
                 </div>
             </div>
             <img class="w-24 rounded" src="{{business.logoUrl}}" />
@@ -25,21 +24,21 @@ export default /*html*/`
         <div class="mt-4">
             <p>
                 <b>Date :</b>
-                {{estimate.date}}
+                {{formatDate estimate.issueDate}}
             </p>
             <p>
                 <b>Validité :</b>
-                {{estimate.validity}}
+                {{formatDate estimate.validityDate}}
             </p>
         </div>
     </header>
     <div class="divider"></div>
-    <main>
+    <main class="flex flex-col">
         <div class="grid grid-cols-2 gap-2">
             <div class="card bg-base-200">
                 <div class="card-body">
                     <b>{{business.name}}</b>
-                    <p>{{business.fullAdress}}</p>
+                    <p>{{business.fullAddress}}</p>
                     <p>{{business.phone}}</p>
                     <p>{{business.email}}</p>
                 </div>
@@ -55,7 +54,7 @@ export default /*html*/`
             </div>
         </div>
 
-        <table class="table table-pin-rows table-pin-cols">
+        <table class="table">
             <thead>
                 <tr>
                     <td width="100%">Nom</td>
@@ -69,14 +68,14 @@ export default /*html*/`
                 {{#each estimate.lines }}
                 <tr>
                     <td>{{this.name}}</td>
-                    <td>{{line.unitPrice}}€</td>
-                    <td>{{line.quantity}}</td>
-                    <td>{{line.totalTax}}€</td>
+                    <td>{{this.unitPrice}}€</td>
+                    <td>{{this.quantity}}</td>
+                    <td>{{this.totalTax}}€</td>
                     <td class="flex">
-                        <span>{{line.totalWithoutTax}}€</span>
-                        {{#if line.discount}}
-                        <span class="ms-2 badge badge-xs badge-soft badge-success">
-                            {{-line.discount}}%
+                        <span>{{this.totalWithoutTax}}€</span>
+                        {{#if this.discount}}
+                        <span class="ms-2 badge badge-sm badge-soft badge-success">
+                            -{{this.discount}}%
                         </span>
                         {{/if}}
                     </td>
@@ -85,30 +84,46 @@ export default /*html*/`
             </tbody>
         </table>
         <div class="flex">
-            <div class="card bg-base-200 shadow-md ms-auto w-xs">
+            <div class="my-auto">
+                <h2 class="text-xl">Informations de paiement</h2>
+                <p class="text-sm text-gray-600">Paiement par carte bancaire, virement ou chèque.</p>
+                <p class="text-sm text-gray-600">Merci de bien vouloir indiquer le numéro de devis lors du paiement.</p>
+            </div>
+            <div class="card bg-base-200 ms-auto w-xs">
                 <div class="card-body gap-0">
                     <h2 class="card-title">Total</h2>
                     <div class="flex">
                         <span class="font-thin opacity-50">HT</span>
                         <span class="ms-auto text-right">
-                            {{estimate?.totalWithoutTax}}€
+                            {{estimate.totalWithoutTax}}€
                         </span>
                     </div>
                     <div class="flex">
                         <span class="font-thin opacity-50">TVA</span>
                         <span class="ms-auto text-right">
-                            {{estimate?.totalTax}}€
+                            {{estimate.totalTax}}€
                         </span>
                     </div>
                     <div class="flex">
                         <span class="font-thin opacity-50">TTC</span>
                         <b class="ms-auto text-right">
-                            {{estimate?.total}}€
+                            {{estimate.total}}€
                         </b>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="divider"></div>
+
+        <div class="flex justify-between">
+            <div class="ms-auto">
+                <h2 class="text-sm text-gray-600">Signature</h2>
+                <div class="card card-border bg-base-100 w-96 h-20">
+                </div>
+            </div>
+        </div>
+
     </main>
 </body>
 

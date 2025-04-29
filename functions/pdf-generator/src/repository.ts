@@ -14,6 +14,11 @@ async function getEstimateById(id: string)
     return await databases.getDocument(databaseId, collections.estimates, id);
 }
 
+async function getClientById(id: string)
+{
+    return await databases.getDocument(databaseId, collections.clients, id);
+}
+
 async function getBusiness()
 {
     let result = await databases.listDocuments(databaseId, collections.business);
@@ -30,5 +35,6 @@ async function init(client: Client)
 export default {
     init,
     getEstimateById,
+    getClientById,
     getBusiness
 };

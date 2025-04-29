@@ -33,7 +33,7 @@ export default /*html*/`
         </div>
     </header>
     <div class="divider"></div>
-    <main>
+    <main class="flex flex-col">
         <div class="grid grid-cols-2 gap-2">
             <div class="card bg-base-200">
                 <div class="card-body">
@@ -84,7 +84,12 @@ export default /*html*/`
             </tbody>
         </table>
         <div class="flex">
-            <div class="card bg-base-200 shadow-md ms-auto w-xs">
+            <div class="my-auto">
+                <h2 class="text-xl">Informations de paiement</h2>
+                <p class="text-sm text-gray-600">Paiement par carte bancaire, virement ou chèque.</p>
+                <p class="text-sm text-gray-600">Merci de bien vouloir indiquer le numéro de devis lors du paiement.</p>
+            </div>
+            <div class="card bg-base-200 ms-auto w-xs">
                 <div class="card-body gap-0">
                     <h2 class="card-title">Total</h2>
                     <div class="flex">
@@ -108,6 +113,17 @@ export default /*html*/`
                 </div>
             </div>
         </div>
+
+        <div class="divider"></div>
+
+        <div class="flex justify-between">
+            <div class="ms-auto">
+                <h2 class="text-sm text-gray-600">Signature</h2>
+                <div class="card card-border bg-base-100 w-96 h-20">
+                </div>
+            </div>
+        </div>
+
     </main>
 </body>
 
