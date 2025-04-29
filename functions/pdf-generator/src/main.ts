@@ -32,7 +32,9 @@ export default async ({ res, req, log, error }: Context) => {
 
   const business = await repository.getBusiness();
   const estimate = await repository.getEstimateById(params.id);
-  const estimateClient = await repository.getClientById(estimate.clientId);
+  let estimateClient;
+  if (estimate.clientId)
+    estimateClient = await repository.getClientById(estimate.clientId);
 
   const htmlContent = await html.generateEstimate(business, estimateClient, estimate);
   const pdfBuffer = await pdf.htmlToPdfBuffer(htmlContent);
