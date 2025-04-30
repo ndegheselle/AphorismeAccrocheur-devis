@@ -32,7 +32,7 @@ export default /*html*/`
             </p>
         </div>
     </header>
-    <div class="divider"></div>
+    <div class="border-b border-gray-200 my-3"></div>
     <main class="flex flex-col">
         <div class="grid grid-cols-2 gap-2">
             <div class="card bg-base-200">
@@ -114,12 +114,12 @@ export default /*html*/`
             </div>
         </div>
 
-        <div class="divider"></div>
+        <div class="border-b border-gray-200 my-3"></div>
 
         <div class="flex justify-between">
             <div class="ms-auto">
                 <h2 class="text-sm text-gray-600">Signature</h2>
-                <div class="card card-border bg-base-100 w-96 h-20">
+                <div class="mt-1 border border-gray-200 rounded-lg w-96 h-20">
                 </div>
             </div>
         </div>

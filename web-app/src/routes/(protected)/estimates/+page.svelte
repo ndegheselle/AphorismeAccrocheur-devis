@@ -53,7 +53,6 @@
             <thead>
                 <tr>
                     <th>Référence</th>
-                    <th>Nom</th>
                     <th>Date</th>
                 </tr>
             </thead>
@@ -65,7 +64,6 @@
                                 >{estimate.reference}</a
                             ></th
                         >
-                        <td>{estimate.name}</td>
                         <td>{formatDate(estimate.issueDate)}</td>
                     </tr>
                 {/each}

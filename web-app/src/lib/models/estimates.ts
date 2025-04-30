@@ -26,13 +26,12 @@ export class EstimateLine
 
 export class Estimate {
     $id?: string;
-    name: string;
     reference: string = "REF-0001";
     issueDate: Date| undefined = undefined;
     validityDate: Date| undefined = undefined;
     clientId: string | undefined;
     lines: EstimateLine[] = [];
-
+    isBilled: boolean = false;
     
     get totalWithoutTax(): number {
         return round(this.lines.reduce((acc, line) => acc + line.totalWithoutTax, 0));
@@ -65,8 +64,7 @@ async function search(search: string, page: number, capacity: number): Promise<P
         Query.limit(capacity),
         Query.offset((page - 1) * capacity),
         Query.or([
-            Query.contains('reference', search),
-            Query.contains('name', search)
+            Query.contains('reference', search)
         ])
     ]);
     let estimates: Estimate[] = result.documents.map(doc => copyFromResult(doc));
@@ -115,11 +113,16 @@ async function remove(id: string): Promise<void>
     await databases.deleteDocument(databaseId, collections.estimates, id);
 }
 
+async function bill(estimateId: string): Promise<void>
+{
+    await databases.updateDocument(databaseId, collections.estimates, estimateId, { isBilled: true });
+}
 export const repository = {
     create,
     search,
     getAll,
     getByClient,
     getById,
-    remove
+    remove,
+    bill
 };

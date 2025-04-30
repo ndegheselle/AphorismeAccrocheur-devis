@@ -35,7 +35,7 @@
         business = _business;
         estimate = _estimate;
         client = _client;
-        modal.show();
+        modal.showDialog();
 
         iframe.srcdoc = await html.generateEstimate(business, client, estimate);
     }

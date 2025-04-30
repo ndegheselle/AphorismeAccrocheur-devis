@@ -45,7 +45,6 @@
         if (basedOn) {
             let estimate = await repository.getById(basedOn);
             lines = estimate.lines;
-            estimateInfos.name = estimate.name + " - Copie";
             client = await repositoryClient.getById(estimate.clientId!);
         } else if (clientId) {
             client = await repositoryClient.getById(clientId);
@@ -88,7 +87,6 @@
 
     async function save() {
         let estimate = new Estimate();
-        estimate.name = estimateInfos.name;
         estimate.clientId = client?.$id;
         estimate.lines = lines;
         estimate.reference = estimateInfos.reference;
@@ -117,10 +115,7 @@
 
 <div class="container mx-auto py-4 h-full flex flex-col">
     <div class="flex">
-        <input
-            type="text"
-            class="input input-ghost text-2xl my-auto font-thin w-full"
-            bind:value={estimateInfos.name} />
+        <h1 class="text-2xl my-auto font-thin w-full">Devis</h1>
         <button class="ms-2 btn btn-primary" onclick={save}>
             <i class="fa-solid fa-save"></i>
             Sauvegarder
@@ -205,15 +200,15 @@
                 <div class="flex">
                     <h2 class="card-title">
                         <i class="fa-solid fa-user"></i>
-                         Client
+                        Client
                     </h2>
                     {#if client}
-                    <button
-                        class="ms-auto btn btn-sm btn-circle ms-auto"
-                        aria-label="Modifier client"
-                        onclick={() => (client = null)}>
-                        <i class="fa-solid fa-close"></i>
-                    </button>
+                        <button
+                            class="ms-auto btn btn-sm btn-circle"
+                            aria-label="Modifier client"
+                            onclick={() => (client = null)}>
+                            <i class="fa-solid fa-close"></i>
+                        </button>
                     {/if}
                 </div>
                 {#if client}

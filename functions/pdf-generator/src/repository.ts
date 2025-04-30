@@ -7,7 +7,7 @@ let databaseId = "67dda6ca000771a6a0f1";
 const bucketId = "67f4d5c000293a2abc0f";
 const collections = {
     clients: "67e15117000204564f9d",
-    estimates: "67e4353d00074cb2008c",
+    estimates: "67e531ba00202bedd722",
     business: "67f3997b0019b415c683",
 };
 const endpoint = "https://cloud.appwrite.io/v1";
@@ -33,12 +33,12 @@ class EstimateLine
 
 class Estimate {
     $id?: string;
-    name: string = "";
     reference: string = "REF-0001";
     issueDate: Date| undefined = undefined;
     validityDate: Date| undefined = undefined;
     clientId: string | undefined;
     lines: EstimateLine[] = [];
+    isBilled: boolean = false;
 
     get totalWithoutTax(): number {
         return round(this.lines.reduce((acc, line) => acc + line.totalWithoutTax, 0));

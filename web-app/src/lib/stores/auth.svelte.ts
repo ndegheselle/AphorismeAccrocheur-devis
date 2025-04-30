@@ -14,6 +14,7 @@ class Authentification {
         } catch (error) {
             this.currentUser = null;
         }
+        return this.currentUser;
     }
 
     async login(email: string, password: string) {
@@ -43,5 +44,4 @@ class Authentification {
 }
 
 const auth = new Authentification();
-await auth.getCurrentUser();
 export default auth;

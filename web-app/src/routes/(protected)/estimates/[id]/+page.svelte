@@ -37,9 +37,9 @@
             .then(async (result) => {
                 if (!result) return;
                 if (estimate?.$id == null) return;
-                await repository.remove(estimate.$id);
-                goto("/estimates");
-                alerts.success("Devis supprimé avec succès !");
+                await repository.bill(estimate.$id);
+                estimate.isBilled = true;
+                alerts.success("Devis facturé avec succès !");
             });
     }
 
