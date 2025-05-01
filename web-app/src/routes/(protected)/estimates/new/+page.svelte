@@ -19,7 +19,6 @@
     let client = $state<Client | null>(null);
     let lines = $state<EstimateLine[]>([]);
     let estimateInfos = $state({
-        name: "Devis",
         reference: createRandomRef(),
         issueDate: new Date().toISOString().split("T")[0],
         validityDate: null,
@@ -103,7 +102,7 @@
         }
 
         try {
-            await repository.create(estimate);
+            estimate = await repository.create(estimate);
             goto(`/estimates/${estimate.$id}`);
             alerts.success($t("estimates.create.success"));
         } catch (e) {

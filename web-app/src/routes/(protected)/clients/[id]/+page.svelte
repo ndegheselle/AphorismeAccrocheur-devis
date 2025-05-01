@@ -12,14 +12,17 @@
     import alerts from "$lib/stores/alerts.svelte";
     import Edit from "../EditModal.svelte";
     import Summary from "../Summary.svelte";
+    import { formatDate } from "$lib/base/utils";
 
     let editModal: Edit;
     let client: Client | undefined;
     let estimates: Estimate[] = [];
+    let invoices: Estimate[] = [];
 
     onMount(async () => {
         client = await repository.getById(page.params.id);
         estimates = await repositoryEstimate.getByClient(client?.$id!);
+        invoices = await repositoryEstimate.getByClient(client?.$id!, true);
     });
 
     function remove() {
@@ -27,7 +30,7 @@
             .show(
                 "Supprimer le client",
                 "Êtes-vous sûr de vouloir supprimer ce client ?",
-                "fa-trash"
+                "fa-trash",
             )
             .then(async (result) => {
                 if (!result) return;
@@ -65,13 +68,13 @@
                             <li>
                                 <button onclick={edit}>
                                     <i class="fa-solid fa-pen"></i>
-                                     Modifier
+                                    Modifier
                                 </button>
                             </li>
                             <li>
                                 <button class="text-error" onclick={remove}>
                                     <i class="fa-solid fa-trash"></i>
-                                     Supprimer
+                                    Supprimer
                                 </button>
                             </li>
                         </ul>
@@ -110,8 +113,8 @@
                                     <span class="font-semibold">
                                         {estimate.reference}
                                     </span>
-                                    <span class=" text-xs">
-                                        {estimate.name}
+                                    <span class="ms-4 text-xs">
+                                        {formatDate(estimate.issueDate)}
                                     </span>
                                 </a>
                             </li>
@@ -126,7 +129,28 @@
                     <i class="fa-solid fa-file"></i>
                     {$t("navigation.invoices")}
                 </h2>
-                <p>Coming soon</p>
+                {#if invoices.length === 0}
+                    <div class="flex h-20">
+                        <span class="text-sm m-auto opacity-60">
+                            Aucune facture trouvé
+                        </span>
+                    </div>
+                {:else}
+                    <ul class="list bg-base-100 rounded-box shadow-md">
+                        {#each invoices as invoice}
+                            <li class="list-row p-2">
+                                <a href="/estimates/{invoice.$id}">
+                                    <span class="font-semibold">
+                                        {invoice.reference}
+                                    </span>
+                                    <span class="ms-4 text-xs">
+                                        {formatDate(invoice.issueDate)}
+                                    </span>
+                                </a>
+                            </li>
+                        {/each}
+                    </ul>
+                {/if}
             </div>
         </div>
     </div>
