@@ -1,12 +1,11 @@
 <script lang="ts">
-    import { Business } from "$lib/models/business";
-    import { t } from "$lib/translations/index";
-    import { errors, hasErrors } from "$lib/models/business.svelte";
-    import { repository } from "$lib/models/business";
-    import alerts from "$lib/stores/alerts.svelte";
     import { goto } from "$app/navigation";
-    import { onMount } from "svelte";
     import { createDeferred, Deferred } from "$lib/base/deferred";
+    import { Business, repository } from "$lib/models/business";
+    import { errors, hasErrors } from "$lib/models/business.svelte";
+    import alerts from "$lib/stores/alerts.svelte";
+    import { t } from "$lib/translations/index";
+    import { onMount } from "svelte";
 
     let business = $state<Business>(new Business());
     let files = $state<FileList | null>(null);
@@ -33,7 +32,7 @@
             if (business.exists) business = await repository.update(business);
             else business = await repository.create(business);
 
-            goto("/dashboard");
+            goto("/estimates");
         } catch {
             alerts.error($t("business.edit.error"));
         }

@@ -1,18 +1,18 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    import { page } from "$app/state";
-    import { t } from "$lib/translations/index";
-    import { repository, Client } from "$lib/models/clients";
-    import {
-        repository as repositoryEstimate,
-        Estimate,
-    } from "$lib/models/estimates";
-    import confirmation from "$lib/stores/confirm.svelte";
     import { goto } from "$app/navigation";
+    import { page } from "$app/state";
+    import { formatDate } from "$lib/base/utils";
+    import { Client, repository } from "$lib/models/clients";
+    import {
+        Estimate,
+        repository as repositoryEstimate,
+    } from "$lib/models/estimates";
     import alerts from "$lib/stores/alerts.svelte";
+    import confirmation from "$lib/stores/confirm.svelte";
+    import { t } from "$lib/translations/index";
+    import { onMount } from "svelte";
     import Edit from "../EditModal.svelte";
     import Summary from "../Summary.svelte";
-    import { formatDate } from "$lib/base/utils";
 
     let editModal: Edit;
     let client: Client | undefined;
@@ -51,8 +51,8 @@
 </script>
 
 <div class="container mx-auto py-4">
-    <div class="grid grid-cols-2 gap-2">
-        <div class="col-span-2 card bg-base-300 shadow-md">
+    <div class="grid gap-2">
+        <div class="card bg-base-300 shadow-md">
             <div class="card-body">
                 <div class="flex">
                     <h2 class="card-title">
@@ -84,7 +84,7 @@
                 <Summary {client} />
             </div>
         </div>
-        <div class="col-span-2 md:col-span-1 card bg-base-200 shadow-md">
+        <div class="card bg-base-200 shadow-md">
             <div class="card-body">
                 <div class="flex">
                     <h2 class="card-title">
@@ -108,44 +108,17 @@
                 {:else}
                     <ul class="list bg-base-100 rounded-box shadow-md">
                         {#each estimates as estimate}
-                            <li class="list-row p-2">
-                                <a href="/estimates/{estimate.$id}">
+                            <li class="p-2">
+                                <a class="flex w-full" href="/estimates/{estimate.$id}">
                                     <span class="font-semibold">
                                         {estimate.reference}
                                     </span>
-                                    <span class="ms-4 text-xs">
+                                    <span class="ms-4 my-auto text-xs">
                                         {formatDate(estimate.issueDate)}
                                     </span>
-                                </a>
-                            </li>
-                        {/each}
-                    </ul>
-                {/if}
-            </div>
-        </div>
-        <div class="col-span-2 md:col-span-1 card bg-base-200 shadow-md">
-            <div class="card-body">
-                <h2 class="card-title">
-                    <i class="fa-solid fa-file"></i>
-                    {$t("navigation.invoices")}
-                </h2>
-                {#if invoices.length === 0}
-                    <div class="flex h-20">
-                        <span class="text-sm m-auto opacity-60">
-                            Aucune facture trouvé
-                        </span>
-                    </div>
-                {:else}
-                    <ul class="list bg-base-100 rounded-box shadow-md">
-                        {#each invoices as invoice}
-                            <li class="list-row p-2">
-                                <a href="/estimates/{invoice.$id}">
-                                    <span class="font-semibold">
-                                        {invoice.reference}
-                                    </span>
-                                    <span class="ms-4 text-xs">
-                                        {formatDate(invoice.issueDate)}
-                                    </span>
+                                    {#if estimate.isBilled}
+                                    <div class="ms-auto my-auto badge badge-primary badge-sm">Facturé</div>
+                                    {/if}
                                 </a>
                             </li>
                         {/each}

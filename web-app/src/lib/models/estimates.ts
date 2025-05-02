@@ -71,23 +71,21 @@ async function search(search: string, page: number, capacity: number): Promise<P
     return new PaginatedResults<Estimate>(estimates, result.total, page, capacity);
 }
 
-async function getAll(page: number, capacity: number, isBilled: boolean = false): Promise<PaginatedResults<Estimate>>
+async function getAll(page: number, capacity: number): Promise<PaginatedResults<Estimate>>
 {
     let result = await databases.listDocuments(databaseId, collections.estimates, [
         Query.limit(capacity),
         Query.offset((page - 1) * capacity),
-        Query.equal('isBilled', isBilled),
     ]);
 
     let estimates: Estimate[] = result.documents.map(doc => copyFromResult(doc));
     return new PaginatedResults<Estimate>(estimates, result.total, page, capacity);
 }
 
-async function getByClient(clientId: string, isBilled: boolean = false): Promise<Estimate[]>
+async function getByClient(clientId: string): Promise<Estimate[]>
 {
     let result = await databases.listDocuments(databaseId, collections.estimates, [
         Query.equal('clientId', clientId),
-        Query.equal('isBilled', isBilled),
     ]);
     let estimates: Estimate[] = result.documents.map(doc => copyFromResult(doc));
     return estimates;

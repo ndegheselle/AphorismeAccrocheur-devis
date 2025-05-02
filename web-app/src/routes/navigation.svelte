@@ -38,7 +38,7 @@
                 </ul>
             </div>
         {/if}
-        <a href="/dashboard" class="btn btn-ghost text-xl">Élancé</a>
+        <a href="/estimates" class="btn btn-ghost text-xl">Élancé</a>
     </div>
 
     {#if auth.isConnected}

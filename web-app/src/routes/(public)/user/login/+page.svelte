@@ -19,7 +19,7 @@
         authForm.isLoading = false;
         if (!authForm.isError) {
             // TODO : goto previous page before login
-            goto("/dashboard");
+            goto("/estimates");
         }
     }
 </script>

@@ -64,7 +64,10 @@
         <div class="card-body">
             <div class="flex">
                 <h1 class="text-2xl my-auto font-thin">
-                    Devis - {estimate?.reference}
+                    Devis - {estimate?.reference} 
+                    {#if estimate?.isBilled}
+                    <div class="badge badge-primary">Facturé</div>
+                    {/if}
                 </h1>
 
                 <details class="dropdown dropdown-end ms-auto">
