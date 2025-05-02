@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
 	plugins: [sveltekit(), tailwindcss()],
+    base: "https://ndegheselle.github.io/AphorismeAccrocheur-devis/",
 	server: {
         host: "0.0.0.0",
         port: 80,
