@@ -13,3 +13,4 @@ export const load = async ({ url }) => {
   await loadTranslations(initialLocale); // keep this just before the `return`
   return {};
 };
+export const ssr = false;

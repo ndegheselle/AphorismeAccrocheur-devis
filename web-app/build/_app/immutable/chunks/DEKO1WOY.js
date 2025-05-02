@@ -1,0 +1,1 @@
+const e="Annuler",r="Créer",t="Mettre à jour",o="Détail",a="Paramètres",c={cancel:e,create:r,update:t,detail:o,"fields.required":"* champs obligatoire",new:"Nouveau",parameters:a,"error.generic":"Une erreur c'est produite."};export{e as cancel,r as create,c as default,o as detail,a as parameters,t as update};

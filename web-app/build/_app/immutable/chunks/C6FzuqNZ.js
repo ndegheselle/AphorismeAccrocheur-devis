@@ -1,0 +1,1 @@
+var i=Object.defineProperty;var l=(s,t,a)=>t in s?i(s,t,{enumerable:!0,configurable:!0,writable:!0,value:a}):s[t]=a;var c=(s,t,a)=>l(s,typeof t!="symbol"?t+"":t,a);class o{constructor(t,a,e,r){c(this,"results");c(this,"total");c(this,"currentPage");c(this,"capacity");this.results=t,this.total=a,this.currentPage=e,this.capacity=r}}export{o as P};

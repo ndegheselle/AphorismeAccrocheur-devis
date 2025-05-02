@@ -1,0 +1,1 @@
+const e="Prénom",o="Nom",s="Adresse",t="Ville",n="Code postal",r="E-mail",c="Téléphone",l={"edit.error":"Une erreur est survenue lors de la création du client.",new:"Nouveau client",firstName:e,lastName:o,adress:s,city:t,zipCode:n,email:r,phone:c};export{s as adress,t as city,l as default,r as email,e as firstName,o as lastName,c as phone,n as zipCode};
