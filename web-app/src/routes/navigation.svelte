@@ -38,7 +38,9 @@
                 </ul>
             </div>
         {/if}
-        <a href="/estimates" class="btn btn-ghost text-xl">Élancé</a>
+        <a href="/estimates" class="btn btn-ghost text-xl">
+            AphAcr
+        </a>
     </div>
 
     {#if auth.isConnected}
@@ -87,7 +89,7 @@
                 </li>
             {:else}
                 <div class="dropdown dropdown-end">
-                    <div class="avatar m-2" tabindex="0" role="button">
+                    <div class="avatar" tabindex="0" role="button">
                         <button class="btn btn-ghost btn-circle">
                             <img
                                 alt={$t("user.avatar.alt")}
