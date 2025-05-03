@@ -1,1 +1,0 @@
-const s="Mon espace",t="Factures",e="Devis",n="Produits",o="Services",c="Prestations",i="Clients",a={my_company:s,invoices:t,estimates:e,products:n,services:o,prestations:c,clients:i};export{i as clients,a as default,e as estimates,t as invoices,s as my_company,c as prestations,n as products,o as services};
