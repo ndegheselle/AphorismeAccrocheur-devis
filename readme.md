@@ -10,6 +10,13 @@ docker run -it --rm `
     appwrite/appwrite:1.5.10
 ```
 
+# Tech stack
+
+- [SvelteKit](https://svelte.dev/) : UI framework
+- [DaisyUI](https://daisyui.com/) : css styles based on [tailwindcss](https://tailwindcss.com/)
+- [Fontawesome](https://fontawesome.com/) : icons
+- [Appwrite](https://appwrite.io/) : backend severless
+
 # Feedback
 
 ## Appwrite
