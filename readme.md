@@ -1,14 +1,6 @@
-# Appwrite setup
+Web application to handle clients invoices and estimates. Create invoice with items, taxes, client and allow PDF export. 
 
-Install :
-
-```powershell
-docker run -it --rm `
-    --volume /var/run/docker.sock:/var/run/docker.sock `
-    --volume ${pwd}/appwrite:/usr/src/code/appwrite:rw `
-    --entrypoint="install" `
-    appwrite/appwrite:1.5.10
-```
+![](preview.gif?raw=true)
 
 # Tech stack
 
