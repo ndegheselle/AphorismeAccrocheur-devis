@@ -1,4 +1,4 @@
-Web application to handle clients invoices and estimates. Create invoice with items, taxes, client and allow PDF export. 
+Web application for managing client invoices and estimates. It allows the creation of invoices with items, taxes, client information and supports PDF export. Developed with SvelteKit 5 and Appwrite, and deployed with Vercel. The objective was to create a modern application while simplifying the development process as much as possible.
 
 ![](preview.gif?raw=true)
 
